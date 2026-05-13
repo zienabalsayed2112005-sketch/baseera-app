@@ -1,223 +1,190 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بَصيرة | سورة البقرة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>سورة الكهف | بَصيرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --deep-brown: #2D1E17; /* بني محروق */
-            --warm-beige: #F5EFE6; /* بيج دافئ */
-            --gold-accent: #D4A373;
-            --glass: rgba(255, 255, 255, 0.1);
+        :root {
+            /* لوحة ألوان مستوحاة من ذوق زينب: درجات البني الموكا والبيج الدافئ */
+            --deep-brown: #2D1B15; 
+            --gold-accent: #C5A059;
+            --beige-light: #F5EFE6;
+            --glass-bg: rgba(255, 255, 255, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        
-        body { 
-            /* خلفية مدمجة بني وبيج بشكل احترافي */
-            background: radial-gradient(circle at center, #4A3428 0%, var(--deep-brown) 100%);
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px;
-            color: var(--warm-beige);
-        }
 
-        /* تكبير الحاوية الرئيسية */
-        .main-wrapper { 
-            text-align: center; 
-            background: var(--glass); 
-            padding: 80px 50px; 
-            border-radius: 60px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5); 
-            max-width: 700px; /* تكبير العرض */
-            width: 95%; 
-            backdrop-filter: blur(20px);
-            position: relative;
+        body {
+            /* الخلفية بني داكن مع تدرج خفيف للفخامة */
+            background: radial-gradient(circle at center, #3E2723 0%, #1A0F0B 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--beige-light);
             overflow: hidden;
         }
 
-        /* إضافة زخرفة خفيفة في الخلفية */
-        .main-wrapper::before {
-            content: " ";
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(212, 163, 115, 0.02) 40px, rgba(212, 163, 115, 0.02) 80px);
-            z-index: -1;
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            text-align: center;
         }
 
-        h1 { font-size: 3.5rem; font-weight: 900; color: var(--gold-accent); margin-bottom: 10px; text-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .sheikh-title { font-size: 1.6rem; margin-bottom: 50px; opacity: 0.9; letter-spacing: 1px; }
+        /* تنسيق اسم السورة بشكل شيك */
+        .surah-header {
+            margin-bottom: 40px;
+        }
 
-        /* الكارت الكبير */
-        .quran-card { 
-            background: var(--warm-beige); 
-            border: 8px solid var(--gold-accent); 
-            border-radius: 50px; 
-            padding: 70px 40px; 
-            cursor: pointer; 
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 30px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        .surah-header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--gold-accent);
+            letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .surah-header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            font-weight: 300;
+            margin-top: 5px;
+        }
+
+        /* كارت المشغل بتصميم Minimalist بروفيشنال */
+        .player-wrapper {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            border-radius: 50px;
+            padding: 60px 30px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
 
-        .quran-card:hover { 
-            transform: translateY(-15px) scale(1.02); 
-            box-shadow: 0 30px 60px rgba(212, 163, 115, 0.3);
+        .player-wrapper:hover {
+            transform: scale(1.02);
+            border-color: var(--gold-accent);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
         }
 
-        /* تأثير النبض عند التشغيل */
-        .quran-card.playing { 
-            background: #FDFCF0;
-            border-color: #4F772D;
-            animation: playPulse 2s infinite;
-        }
-
-        @keyframes playPulse {
-            0% { box-shadow: 0 0 0 0 rgba(79, 119, 45, 0.4); }
-            70% { box-shadow: 0 0 0 30px rgba(79, 119, 45, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(79, 119, 45, 0); }
-        }
-
-        .quran-icon { font-size: 10rem; line-height: 1; transition: 0.5s; }
-        .playing .quran-icon { transform: rotate(-5deg) scale(1.1); }
-
-        .btn-label { font-size: 2.2rem; font-weight: 900; color: var(--deep-brown); }
-
-        .back-btn { 
-            margin-top: 60px; 
-            padding: 18px 60px; 
-            background: var(--gold-accent); 
-            color: var(--deep-brown); 
-            text-decoration: none; 
-            border-radius: 100px; 
-            font-weight: 900; 
-            font-size: 1.4rem;
-            display: inline-block;
-            transition: 0.3s;
+        /* أيقونة المصحف بشكل جمالي */
+        .quran-icon-wrap {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #C5A059 0%, #8D6E63 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        .back-btn:hover { background: var(--warm-beige); transform: scale(1.1); }
- #audioPlayer { display: none; }
+        .status-msg {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--beige-light);
+        }
+
+        .back-link {
+            margin-top: 50px;
+            display: inline-block;
+            text-decoration: none;
+            color: var(--gold-accent);
+            font-size: 1rem;
+            padding: 10px 30px;
+            border: 1px solid var(--gold-accent);
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            background: var(--gold-accent);
+            color: var(--deep-brown);
+        }
+
+        /* أنيميشن ناعم للتشغيل */
+        .is-playing {
+            border-color: var(--gold-accent);
+            background: rgba(197, 160, 89, 0.05);
+        }
+
+        .pulse-animation {
+            animation: softPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes softPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
-<body>
+<body onload="initApp()">
 
-    <div class="main-wrapper">
-        <h1>سورة البقرة</h1>
-        <p class="sheikh-title">بصوت القارئ عمار علي</p>
-        
-        <div class="quran-card" id="quranAction" onclick="togglePlay()">
-            <div class="quran-icon">📖</div>
-            <h2 id="statusText" class="btn-label">إضغط للاستماع</h2>
+    <div class="container">
+        <header class="surah-header">
+            <h1>سورة الكهف</h1>
+            <p>بصوت القارئ أحمد عبد الفتاح</p>
+        </header>
+
+        <div class="player-wrapper" id="mainButton" onclick="handleToggle()">
+            <div class="quran-icon-wrap" id="iconBox">📖</div>
+            <h2 id="statusLabel" class="status-msg">اضغط للاستماع</h2>
         </div>
 
-        <audio id="audioPlayer"></audio>
+        <audio id="audioSource" src="audio/alkahf.mp3"></audio>
 
-        <a href="home.html" class="back-btn" onmouseenter="speak('العودة للقائمة الرئيسية')">العودة للرئيسية</a>
+        <a href="home.html" class="back-link">العودة للرئيسية</a>
     </div>
 
     <script>
-        const audio = document.getElementById('audioPlayer');
-        const card = document.getElementById('quranAction');
-        const statusText = document.getElementById('statusText');
-        let isPlaying = false;
+        const audio = document.getElementById('audioSource');
+        const statusLabel = document.getElementById('statusLabel');
+        const mainButton = document.getElementById('mainButton');
+        const iconBox = document.getElementById('iconBox');
+        let playingState = false;
 
-        function speak(text) {
+        function speak(msg) {
             window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
+            const utterance = new SpeechSynthesisUtterance(msg);
             utterance.lang = 'ar-EG';
+            utterance.rate = 0.85;
             window.speechSynthesis.speak(utterance);
         }
 
-        function togglePlay() {
-            if (!isPlaying) {
-                audio.src = "audio/2.mp3"; 
-                
+        function initApp() {
+            // التوجيه الصوتي عند فتح الصفحة
+            speak("أنتِ الآن في صفحة القرآن. اضغطي في منتصف الشاشة لتشغيل سورة الكهف بصوت الشيخ أحمد عبد الفتاح");
+        }
+
+        function handleToggle() {
+            if (!playingState) {
                 audio.play().then(() => {
-                    isPlaying = true;
-                    card.classList.add('playing');
-                    statusText.innerText = "جاري التلاوة الآن...";
-                    speak("بدء تلاوة سورة البقرة بصوت القارئ عمار علي");
-                }).catch(err => {
-                    // تجربة مسار بديل
-                    audio.src = "audio/quran.mp3";
-                    audio.play().then(() => {
-                        isPlaying = true;
-                        card.classList.add('playing');
-                        statusText.innerText = "جاري التلاوة الآن...";
-                    }).catch(() => {
-                        speak("عذراً، لم أجد ملف الصوت");
-                    });
+                    playingState = true;
+                    statusLabel.innerText = "جاري التلاوة...";
+                    mainButton.classList.add('is-playing');
+                    iconBox.classList.add('pulse-animation');
+                    speak("جاري تشغيل سورة الكهف بصوت الشيخ أحمد عبد الفتاح");
+                }).catch(() => {
+                    speak("عذراً، تأكدي من وجود الملف في مجلد أوديو باسم الكهف دوت إم بي ثري");
                 });
             } else {
                 audio.pause();
-                isPlaying = false;
-                card.classList.remove('playing');
-                statusText.innerText = "إضغط للاستماع";
+                playingState = false;
+                statusLabel.innerText = "اضغط للاستماع";
+                mainButton.classList.remove('is-playing');
+                iconBox.classList.remove('pulse-animation');
                 speak("تم إيقاف التلاوة");
             }
         }
-
-        window.onload = () => speak("أنت الآن في قسم سورة البقرة بصوت عمار علي. اضغط في منتصف الشاشة للاستماع.");
     </script>
-    <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedMode = localStorage.getItem('baseeraTheme');
-        const style = document.createElement('style');
-        let cssRules = "";
-
-        // وضع التباين العالي (أسود وأصفر)
-        if (savedMode === 'high-vis') {
-            cssRules = `
-                body { background-color: #000 !important; color: #ff0 !important; }
-                .card, .quran-card, div, section, button { 
-                    background-color: #000 !important; 
-                    color: #ff0 !important; 
-                    border: 2px solid #ff0 !important; 
-                }
-                h1, h2, h3, p, span { color: #ff0 !important; }
-            `;
-        } 
-        // الوضع المظلم (رمادي غامق وأبيض)
-        else if (savedMode === 'dark') {
-            cssRules = `
-                body { background-color: #1a1a1a !important; color: #fff !important; }
-                .card, .quran-card, div, section, button { 
-                    background-color: #333 !important; 
-                    color: #fff !important; 
-                }
-            `;
-        }
-        // وضع القراءة (اللبني اللي كنتِ محتاجاه)
-        else if (savedMode === 'soft-blue') {
-            cssRules = `
-                body { background-color: #e3f2fd !important; color: #0d47a1 !important; }
-                .card, .quran-card, div, section, button { 
-                    background-color: #bbdefb !important; 
-                    color: #0d47a1 !important; 
-                    border: 1px solid #90caf9 !important; 
-                }
-                h1, h2, h3, p, span { color: #0d47a1 !important; }
-            `;
-        }
-
-        if (cssRules !== "") {
-            style.innerHTML = cssRules;
-            document.head.appendChild(style);
-        }
-    });
-</script>
 </body>
 </html>
