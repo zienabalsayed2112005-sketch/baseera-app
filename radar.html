@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بَصيرة | الرادار الذكي</title>
+    <title>بَصيرة | الرادار الذكي المطور</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
@@ -47,79 +47,94 @@
         <div class="ring" style="animation-delay: 1.5s"></div>
     </div>
 
-    <div id="status-display">اضغطي في أي مكان لتفعيل النظام</div>
+    <div id="status-display">اضغطي لتفعيل الرادار التلقائي</div>
 
-    <button class="main-btn" 
-            onmouseenter="speak('زر ماذا أرى')" 
-            onclick="identifyObject(event)">
-        <i class="fas fa-eye"></i> ماذا أرى؟
+    <!-- الزرار دلوقتى بقى بيشغل ويوقف التتبع التلقائي -->
+    <button id="toggleBtn" class="main-btn">
+        <i class="fas fa-play"></i> ابدأ الرصد التلقائي
     </button>
 
-    <a href="home.html" class="back-home" 
-       onmouseenter="speak('زر العودة للصفحة الرئيسية')">
-       <i class="fas fa-home"></i> العودة للرئيسية
+    <a href="home.html" class="back-home" onmouseenter="speak('زر العودة للصفحة الرئيسية')">
+        <i class="fas fa-home"></i> العودة للرئيسية
     </a>
 
     <script>
         const video = document.getElementById('webcam');
         const status = document.getElementById('status-display');
+        const toggleBtn = document.getElementById('toggleBtn');
         let model;
         let isActivated = false;
+        let isScanning = false;
+        let lastDetected = ""; // لمنع تكرار اسم الشيء الواحد بسرعة
 
         const labels = { 
-            'handbag': 'شنطة كتف أو حقيبة يد', 'backpack': 'شنطة ظهر', 'suitcase': 'شنطة سفر',
-            'pen': 'قلم جاف', 'pencil': 'قلم رصاص', 'book': 'كتاب أو كشكول مدرسي',
-            'paper': 'ورقة أو ملزمة', 'eraser': 'أستيكة أو ممحاة', 'scissors': 'مقص',
-            'laptop': 'لاب توب', 'bench': 'بنچ أو مقعد المدرج', 'chair': 'كرسي',
-            'table': 'طاولة أو ديسك', 'whiteboard': 'سبورة بيضاء', 'bottle': 'زجاجة مياه',
-            'cup': 'كوب', 'cell phone': 'موبايل', 'clock': 'ساعه', 'person': 'إنسان', 
-            'mouse': 'فأرة', 'keyboard': 'لوحة مفاتيح', 'fork': 'شوكة', 'knife': 'سكينة', 
-            'spoon': 'معلقة', 'umbrella': 'شمسية', 'tv': 'شاشة عرض', 'remote': 'ريموت كنترول', 
-            'toothbrush': 'فرشاة أسنان', 'plug': 'شاحن'
+            'handbag': 'شنطة', 'backpack': 'شنطة ظهر', 'suitcase': 'شنطة سفر',
+            'laptop': 'لاب توب', 'chair': 'كرسي', 'table': 'طاولة', 
+            'bottle': 'زجاجة مياه', 'cup': 'كوب', 'cell phone': 'موبايل', 
+            'person': 'إنسان', 'mouse': 'فأرة', 'keyboard': 'لوحة مفاتيح',
+            'clock': 'ساعه', 'book': 'كتاب', 'pen': 'قلم'
         };
 
         function speak(text) {
+            if (window.speechSynthesis.speaking && text === lastDetected) return; 
             window.speechSynthesis.cancel();
             const msg = new SpeechSynthesisUtterance(text);
             msg.lang = 'ar-SA';
-            msg.rate = 0.9;
+            msg.rate = 1.0;
             window.speechSynthesis.speak(msg);
         }
 
         async function startRadar() {
             if (isActivated) return;
             isActivated = true;
-            speak("مرحباً بك في رادار بَصيرة الذكي. الرادار يعمل الآن. اضغطي على زر ماذا أرى الموجود في منتصف الشاشة لاستكشاف الأشياء من حولكِ.");
-            status.innerText = "جاري تشغيل الكاميرا والموديل...";
+            status.innerText = "جاري تحميل العين الذكية...";
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
                 video.srcObject = stream;
                 model = await cocoSsd.load();
-                status.innerText = "النظام جاهز الآن";
+                status.innerText = "الرادار جاهز";
+                speak("الرادار جاهز، اضغطي على زر ابدأ الرصد للتعرف التلقائي.");
+                
+                toggleBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    isScanning = !isScanning;
+                    if (isScanning) {
+                        toggleBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف الرصد';
+                        status.innerText = "الرصد التلقائي يعمل...";
+                        runDetection();
+                    } else {
+                        toggleBtn.innerHTML = '<i class="fas fa-play"></i> ابدأ الرصد التلقائي';
+                        status.innerText = "تم إيقاف الرصد";
+                    }
+                };
             } catch (err) {
-                status.innerText = "خطأ: اسمحي بالوصول للكاميرا";
-                speak("عذراً، أحتاج لإذن الكاميرا لكي أرى.");
+                status.innerText = "خطأ في الكاميرا";
+                speak("من فضلكِ اسمحي بالوصول للكاميرا.");
             }
         }
 
-        async function identifyObject(event) {
-            if (event) event.stopPropagation();
-            if (!model) return;
+        async function runDetection() {
+            if (!isScanning || !model) return;
 
             const predictions = await model.detect(video);
-            const highConfidenceResults = predictions.filter(p => p.score > 0.50);
             
-            if (highConfidenceResults.length > 0) {
-                highConfidenceResults.sort((a, b) => b.score - a.score);
-                const top = highConfidenceResults[0];
-                const result = labels[top.class] || "شيء غير معروف";
-                speak(`أرى أمامك ${result}`);
-                status.innerText = `تم رصد: ${result}`;
-            } else {
-                const retryMsg = "عذراً، لا أستطيع تحديد هذا الشيء بوضوح. من فضلكِ قربيه من الكاميرا أكثر.";
-                speak(retryMsg);
-                status.innerText = "حاولي تقريب الشيء أكثر";
+            // رفعنا الدقة لـ 65% عشان نضمن إنه "صح 100%" وميغلطش في الأشياء
+            const bestPrediction = predictions.filter(p => p.score > 0.65)[0];
+
+            if (bestPrediction) {
+                const result = labels[bestPrediction.class] || bestPrediction.class;
+                if (result !== lastDetected) {
+                    speak(`أرى ${result}`);
+                    status.innerText = `تم رصد: ${result}`;
+                    lastDetected = result;
+                    
+                    // استراحة بسيطة عشان ميفضلش يكرر الاسم لو الحاجة لسة قدام الكاميرا
+                    setTimeout(() => { lastDetected = ""; }, 3000);
+                }
             }
+            
+            // استدعاء الدالة مرة تانية لعمل حلقة مستمرة
+            requestAnimationFrame(runDetection);
         }
     </script>
 </body>
