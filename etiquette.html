@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جسور الأمل | الدليل الشامل للإتيكيت</title>
+    <style>
+        :root {
+            --deep-brown: #2D1E17;
+            --gold: #D4A373;
+            --beige: #F5EFE6;
+            --white: #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--beige); color: var(--deep-brown); min-height: 100vh; line-height: 1.8; transition: filter 0.5s ease; }
+
+        header {
+            background: linear-gradient(to bottom, var(--deep-brown), #4A3428);
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+        }
+        header h1 { color: var(--gold); font-size: 3rem; font-weight: 900; margin-bottom: 10px; }
+        header p { color: var(--white); font-size: 1.3rem; max-width: 800px; margin: 0 auto; opacity: 0.9; }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        /* دليل الأيقونات الستة */
+        .section-title { text-align: center; margin-bottom: 40px; font-size: 2.2rem; position: relative; padding-bottom: 10px; }
+        .section-title::after { content: ''; width: 100px; height: 4px; background: var(--gold); position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+
+        .etiquette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .etiquette-card {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-right: 8px solid var(--gold);
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .etiquette-card:hover { transform: scale(1.03); background: var(--deep-brown); color: var(--white); }
+        .icon-box { font-size: 3.5rem; margin-bottom: 20px; display: block; }
+        .etiquette-card h3 { color: var(--gold); font-size: 1.6rem; margin-bottom: 15px; }
+        .etiquette-card p { font-size: 1.1rem; text-align: justify; }
+
+        /* دليل المبصرين الذكي المطور */
+        .guide-section {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 50px;
+            margin-top: 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+        }
+
+        .guide-content { display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap; }
+        .guide-text { flex: 1; min-width: 300px; }
+        .guide-text h2 { font-size: 2.2rem; margin-bottom: 30px; color: var(--gold); border-bottom: 2px solid var(--gold); display: inline-block; }
+        
+        .guide-step { margin-bottom: 30px; }
+        .guide-step h3 { color: var(--deep-brown); font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .guide-step h3::before { content: '◈'; color: var(--gold); }
+        
+        .guide-text ul { list-style: none; }
+        .guide-text ul li { margin-bottom: 15px; padding-right: 30px; position: relative; font-size: 1.1rem; }
+        .guide-text ul li::before { content: '✔'; position: absolute; right: 0; color: var(--gold); font-weight: bold; }
+
+        /* وضع المحاكاة */
+        .sim-box {
+            background: var(--deep-brown);
+            color: var(--gold);
+            padding: 50px;
+            border-radius: 40px;
+            text-align: center;
+            margin: 60px 0;
+            border: 4px dashed var(--gold);
+        }
+        .sim-btn {
+            background: var(--gold);
+            color: var(--deep-brown);
+            padding: 20px 50px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.3s;
+        }
+        .sim-btn:hover { background: var(--white); letter-spacing: 1px; }
+
+        /* الوسام العائم */
+        .floating-badge {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            width: 80px;
+            height: 80px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            cursor: pointer;
+            z-index: 1000;
+            border: 4px solid var(--white);
+            transition: 0.5s;
+        }
+        .floating-badge:hover { transform: rotate(360deg) scale(1.1); }
+
+        .btn-back {
+            display: block;
+            width: fit-content;
+            margin: 60px auto;
+            padding: 20px 80px;
+            background: var(--deep-brown);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 900;
+            border: 3px solid var(--gold);
+            font-size: 1.3rem;
+            transition: 0.3s;
+        }
+        .btn-back:hover { background: var(--gold); color: var(--deep-brown); }
+    </style>
+</head>
+<body onload="initEtiquette()">
+
+    <header>
+        <h1>جسور الأمل</h1>
+        <p>دليلك العملي لتعزيز التواصل الراقي وفهم لغة المكفوفين في التعامل اليومي.</p>
+    </header>
+
+    <div class="container">
+        
+        <h2 class="section-title">أركان التعامل الستة</h2>
+        
+        <div class="etiquette-grid">
+            <div class="etiquette-card" onmouseenter="speak('الاستئذان قبل المساعدة: لا تسحبني فجأة، اسألني أولاً هل أحتاج للمساعدة؟')">
+                <span class="icon-box">🤝</span>
+                <h3>الاستئذان الواعي</h3>
+                <p>المساعدة حق مُتاح، والرفض حق مشروع. اسأل دائماً: "هل يمكنني مساعدتك؟" وانتظر الرد قبل الإمساك بِي.</p>
+            </div>
+            <div class="etiquette-card" onmouseenter="speak('التواصل المباشر: أنا أسمعك وأفهمك جيداً، خاطبني أنا مباشرة ولا تخاطب مرافقي.')">
+                <span class="icon-box">🗣️</span>
+                <h3>التواصل المباشر</h3>
+                <p>وجه نظرك وكلامك للشخص الكفيف مباشرة. تجاهله والحديث مع مرافقه يقلل من شأنه واستقلاليته.</p>
+            </div>
+            <div class="etiquette-card" onmouseenter="speak('دقة الوصف: استخدم اتجاهات الساعة، فكلمات مثل هناك وهنا لا تعني لي شيئاً.')">
+                <span class="icon-box">🧭</span>
+                <h3>لغة الاتجاهات</h3>
+                <p>كن دقيقاً؛ قل "الباب على يمينك" أو "المقعد على الساعة الثالثة". الوصف الدقيق هو العين التي نرى بها المكان.</p>
+            </div>
+            <div class="etiquette-card" onmouseenter="speak('آداب الانصراف: لا تتركني أتحدث وحدي، أعلمني بلطف أنك ستغادر المكان الآن.')">
+                <span class="icon-box">🚶</span>
+                <h3>وضوح المغادرة</h3>
+                <p>من المحرج أن يكتشف الكفيف أنه يتحدث للفراغ. أخبره دائماً: "سأذهب الآن" ليكون على علم بمحيطه.</p>
+            </div>
+            <div class="etiquette-card" onmouseenter="speak('وضعية المرشد: اتركني أمسك بمرفقك، هكذا أشعر بحركات جسمك وأتنبأ بالعقبات.')">
+                <span class="icon-box">🦾</span>
+                <h3>فن المرافقة</h3>
+                <p>في المشي، الكفيف يمسك بمرفق المبصر ويسير خلفه بنصف خطوة. لا تدفعه من الخلف أو تسحبه من يده.</p>
+            </div>
+            <div class="etiquette-card" onmouseenter="speak('تنبيه السلالم: توقف ثانية قبل أي سلم، وأخبرني هل هو صاعد أم هابط؟')">
+                <span class="icon-box">🪜</span>
+                <h3>الأمان الحركي</h3>
+                <p>قف تماماً قبل السلم أو الباب، وصف العائق بوضوح: "أمامنا درجات صاعدة" أو "الباب يفتح للداخل".</p>
+            </div>
+        </div>
+
+        <!-- دليل المبصر الذكي المطور -->
+        <section class="guide-section">
+            <div class="guide-content">
+                <div class="guide-text">
+                    <h2>📘 دليل المبصر الذكي الشامل</h2>
+                    
+                    <div class="guide-step">
+                        <h3>أولاً: إتيكيت اللقاء الأول</h3>
+                        <ul>
+                            <li><strong>التعريف بالهوية:</strong> ابدأ بالسلام واذكر اسمك فوراً حتى لا يضطر الكفيف لتخمين صوتك.</li>
+                            <li><strong>الحديث الطبيعي:</strong> لا ترفع صوتك بشكل مبالغ فيه؛ ففقد البصر لا يعني ضعف السمع.</li>
+                            <li><strong>تجنب الشفقة:</strong> نادنا بأسمائنا وألقابنا، وتجنب كلمات مثل "يا حرام" أو "يا مسكين".</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-step">
+                        <h3>ثانياً: أثناء المرافقة والمشي</h3>
+                        <ul>
+                            <li><strong>وضع المرفق:</strong> اجعل ذراعك (عند الكوع) هي القائد، واترك للكفيف حرية الإمساك بها.</li>
+                            <li><strong>وصف الطريق:</strong> أخبره بالتغيرات المفاجئة مثل "الأرض الآن غير مستوية" أو "سندخل في ممر ضيق".</li>
+                            <li><strong>دخول القاعات:</strong> صِف له ترتيب الغرفة (مثلاً: الكرسي على يمينك والمكتب أمامك) ليتحرك بأمان.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-step">
+                        <h3>ثالثاً: التواصل الاجتماعي الراقي</h3>
+                        <ul>
+                            <li><strong>المفردات البصرية:</strong> استخدم كلمات "انظر" و"شفنا" بحرية؛ فهي كلمات إدراكية نستخدمها جميعاً.</li>
+                            <li><strong>احترام الأدوات:</strong> العصا البيضاء هي امتداد لجسد الكفيف، لا تلمسها أو تحركها من مكانها.</li>
+                            <li><strong>وداع لائق:</strong> قبل أن تنصرف، تأكد أن الكفيف في مكان آمن وأنه يعلم أنك ستغادر الآن.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="flex: 0.6; text-align: center;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3062/3062230.png" alt="Guide Icon" style="width: 100%; max-width: 280px; filter: sepia(0.3) drop-shadow(0 10px 15px rgba(0,0,0,0.1));">
+                    <div style="margin-top: 30px; background: var(--beige); padding: 25px; border-radius: 20px; border-right: 5px solid var(--gold);">
+                        <p style="font-style: italic; font-size: 1rem; color: #555;">"الوعي هو الجسر الذي يربط القلوب قبل العيون. كن أنت هذا الجسر اليوم."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ركن المحاكاة -->
+        <section class="sim-box">
+            <h3>👁️ تجربة "بصيرة" للمبصرين</h3>
+            <p>هل أنت مستعد لتجربة العالم من خلال حواسك الأخرى؟ جرب المحاكاة السمعية.</p>
+            <button class="sim-btn" onclick="startSim()">تفعيل وضع الرؤية بالقلب</button>
+        </section>
+
+        <a href="academy.html" class="btn-back">العودة للرئيسية</a>
+    </div>
+
+    <!-- الوسام العائم -->
+    <div class="floating-badge" onclick="playRandomAdvice()" onmouseenter="speak('اضغط علي لسماع نصيحة اليوم في التعامل الراقي.')">
+        <span style="font-size: 2.5rem;">⭐</span>
+    </div>
+
+    <script>
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'ar-EG';
+            speech.rate = 0.9;
+            window.speechSynthesis.speak(speech);
+        }
+
+        function initEtiquette() {
+            speak("أهلاً بك في جسور الأمل. استعرض دليل المبصر الشامل لتعلم فن التعامل الراقي معنا.");
+        }
+
+        function startSim() {
+            document.body.style.filter = 'brightness(0)';
+            speak("أنت الآن في وضع المحاكاة. اعتمد على أذنيك فقط. المحاكاة ستنتهي بعد عشر ثوانٍ.");
+            setTimeout(() => {
+                document.body.style.filter = 'none';
+                speak("تم إنهاء وضع المحاكاة. نأمل أن تكون قد استشعرت أهمية الوصف الدقيق.");
+            }, 10000);
+        }
+
+        function playRandomAdvice() {
+            const advices = [
+                "تذكر: المساعدة هي اختيار وليست فرضاً على الكفيف.",
+                "نبرة صوتك هي وجهك الذي نراه، فاجعلها دائماً مبتسمة.",
+                "العصا البيضاء هي وسيلة استقلالنا، فاحترم خصوصيتها."
+            ];
+            const random = advices[Math.floor(Math.random() * advices.length)];
+            speak(random);
+        }
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

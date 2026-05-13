@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ركن الهدوء - بَصيرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mocha: #3D2B1F;      /* البني الغامق */
+            --cream: #F5EFE6;      /* البيج الفاتح */
+            --gold: #C69774;       
+            --white-beige: #FCF8F1; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+        body {
+            background-color: var(--cream);
+            color: var(--mocha);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+
+        .brand-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            border-bottom: 4px solid var(--mocha);
+            padding-bottom: 5px;
+        }
+
+        .relax-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .relax-card {
+            background-color: var(--mocha); 
+            color: var(--white-beige);    
+            border-radius: 30px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(61, 43, 31, 0.2);
+            border: 2px solid transparent;
+        }
+
+        .relax-card:hover {
+            transform: translateY(-10px);
+            background-color: #4d3629; 
+            border-color: var(--gold);
+        }
+
+        .relax-card i {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .relax-card span {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .audio-status-bar {
+            position: fixed;
+            bottom: 120px;
+            background: var(--mocha);
+            color: var(--white-beige);
+            padding: 15px 35px;
+            border-radius: 50px;
+            display: none;
+            align-items: center;
+            gap: 20px;
+            border: 2px solid var(--gold);
+            z-index: 1000;
+        }
+
+        .stop-btn {
+            background: #8E1A1A;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .home-btn {
+            text-decoration: none;
+            background-color: var(--white-beige);
+            color: var(--mocha);
+            padding: 15px 60px;
+            border-radius: 50px;
+            margin-top: 50px;
+            font-weight: 900;
+            border: 2px solid var(--mocha);
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body onload="startupVoice()">
+
+    <header>
+        <div class="brand-title">ركن الهدوء</div>
+    </header>
+
+    <div class="relax-grid">
+        <div class="relax-card" onmouseenter="speak('أيقونة صوت المطر')" onclick="playRelaxSound('rain', 'صوت المطر')">
+             <i>🌧️</i>
+            <span>صوت المطر</span>
+        </div>
+
+        <div class="relax-card" onmouseenter="speak('أيقونة أمواج البحر')" onclick="playRelaxSound('sea', 'أمواج البحر')">
+            <i>🌊</i>
+            <span>أمواج البحر</span>
+        </div>
+
+        <div class="relax-card" onmouseenter="speak('أيقونة هدوء الغابة')" onclick="playRelaxSound('forest', 'هدوء الغابة')">
+            <i>🍃</i>
+            <span>هدوء الغابة</span>
+        </div>
+
+        <div class="relax-card" onmouseenter="speak('أيقونة مدفأة الحطب')" onclick="playRelaxSound('fire', 'مدفأة الحطب')">
+            <i>🔥</i>
+            <span>مدفأة دافئة</span>
+        </div>
+    </div>
+
+    <div id="audioStatus" class="audio-status-bar">
+        <span id="playingText">جاري التشغيل...</span>
+        <button class="stop-btn" onmouseenter="speak('زر إيقاف الصوت')" onclick="stopAll()">إيقاف ⏹️</button>
+    </div>
+
+    <a href="home.html" class="home-btn" onmouseenter="speak('العودة للصفحة الرئيسية')">
+        العودة للرئيسية
+    </a>
+
+    <!-- التعديل هنا: استخدام المسار المحلي المباشر ./sounds/ -->
+    <audio id="rainAudio" loop src="./sounds/rain.mp3"></audio>
+    <audio id="seaAudio" loop src="./sounds/sea.mp3"></audio>
+    <audio id="forestAudio" loop src="./sounds/forest.mp3"></audio>
+    <audio id="fireAudio" loop src="./sounds/fire.mp3"></audio>
+
+    <script>
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'ar-EG';
+            window.speechSynthesis.speak(msg);
+        }
+
+        function startupVoice() {
+            setTimeout(() => { speak("مرحباً بك في ركن الهدوء. المس المربعات البنية لاستكشاف الأصوات."); }, 800);
+        }
+
+        function playRelaxSound(type, name) {
+            stopAll();
+            const audio = document.getElementById(type + 'Audio');
+            if (audio) {
+                speak("استمع الآن إلى " + name);
+                setTimeout(() => {
+                    audio.play().catch(error => {
+                        console.error("خطأ في تشغيل الملف: تأكدي من وجود الملف في فولدر sounds", error);
+                        alert("تأكدي من وضع ملف " + type + ".mp3 داخل مجلد sounds");
+                    });
+                    document.getElementById('audioStatus').style.display = 'flex';
+                    document.getElementById('playingText').innerText = "مُشغل الآن: " + name;
+                }, 1500); 
+            }
+        }
+
+        function stopAll() {
+            const audios = document.querySelectorAll('audio');
+            audios.forEach(a => { a.pause(); a.currentTime = 0; });
+            document.getElementById('audioStatus').style.display = 'none';
+            window.speechSynthesis.cancel();
+        }
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

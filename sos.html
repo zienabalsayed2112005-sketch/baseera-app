@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بَصيرة | Radar SOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --deep-brown: #1a0f0a; 
+            --dark-beige: #B59F7B; 
+            --sos-red: #8B0000; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+        body { 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #2D1B14 0%, var(--deep-brown) 100%);
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        /* حاوية النجوم */
+        .stars-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            opacity: 0.5; animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+
+        .header h1 {
+            font-size: 3.5rem; font-weight: 900; color: var(--dark-beige);
+            margin-bottom: 40px; z-index: 3;
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px rgba(181, 159, 123, 0.4);
+        }
+
+        /* --- تصميم الرادار المظبوط --- */
+        .radar-container {
+            position: relative;
+            width: 520px;
+            height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .radar-wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--dark-beige);
+            border-radius: 50%;
+            opacity: 0;
+            animation: radar-pulse 4s infinite linear;
+        }
+
+        /* توزيع توقيت الموجات عشان تطلع ورا بعضها */
+        .radar-wave:nth-child(1) { animation-delay: 0s; }
+        .radar-wave:nth-child(2) { animation-delay: 1s; }
+        .radar-wave:nth-child(3) { animation-delay: 2s; }
+        .radar-wave:nth-child(4) { animation-delay: 3s; }
+
+        @keyframes radar-pulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        /* زرار الاستغاثة */
+        .sos-btn {
+            width: 500px; height: 500px;
+            background: var(--dark-beige);
+            border: 10px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9rem; font-weight: 900; color: var(--deep-brown);
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            z-index: 4;
+            transition: 0.3s;
+        }
+
+        .sos-btn:active { transform: scale(0.95); }
+
+        /* زرار العودة */
+        .back-link {
+            margin-top: 50px;
+            color: var(--deep-brown);
+            font-weight: 900;
+            font-size: 1.3rem;
+            text-decoration: none;
+            padding: 15px 60px;
+            background: var(--dark-beige);
+            border-radius: 50px;
+            transition: 0.4s;
+            z-index: 3;
+        }
+
+        /* حالة الطوارئ */
+        .emergency-active { background: var(--sos-red) !important; }
+        .emergency-active .radar-wave { border-color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="stars-container" id="stars"></div>
+
+    <div class="header">
+        <h1>بَصيرة</h1>
+    </div>
+
+    <div class="radar-container">
+        <!-- موجات الرادار -->
+        <div class="radar-wave"></div>
+        <div class="radar-wave"></div>
+        <div class="radar-wave"></div>
+        <div class="radar-wave"></div>
+        
+        <!-- زرار الـ SOS في السنتر -->
+        <div class="sos-btn" id="sos" onclick="toggleSOS()">SOS</div>
+    </div>
+
+    <a href="home.html" class="back-link" onclick="stopSOS()">العودة للرئيسية</a>
+
+    <script>
+        // توليد النجوم
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 80; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            star.style.width = star.style.height = size;
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            starsContainer.appendChild(star);
+        }
+
+        let isSOSActive = false;
+        let audioCtx, oscillator, sirenInterval;
+
+        function toggleSOS() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (!isSOSActive) {
+                isSOSActive = true;
+                document.body.classList.add('emergency-active');
+                oscillator = audioCtx.createOscillator();
+                oscillator.type = 'square';
+                oscillator.connect(audioCtx.destination);
+                oscillator.start();
+                sirenInterval = setInterval(() => {
+                    const now = audioCtx.currentTime;
+                    oscillator.frequency.exponentialRampToValueAtTime(1000, now + 0.4);
+                    oscillator.frequency.exponentialRampToValueAtTime(500, now + 0.8);
+                }, 800);
+            } else { stopSOS(); }
+        }
+
+        function stopSOS() {
+            isSOSActive = false;
+            document.body.classList.remove('emergency-active');
+            if (oscillator) { oscillator.stop(); clearInterval(sirenInterval); }
+        }
+    </script>
+</body>
+</html>

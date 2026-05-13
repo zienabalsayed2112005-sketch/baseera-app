@@ -1,0 +1,15 @@
+{
+  "name": "Baseera App",
+  "short_name": "بَصيرة",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#F5EFE6",
+  "theme_color": "#2D1B14",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

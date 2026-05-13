@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بصيرة - المساعد الذكي المطور</title>
+    <style>
+        body {
+            background: #433129;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .main-assistant-btn {
+            width: 280px;
+            height: 280px;
+            background: #8c6d5e;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            border: 12px solid #f3f0e7;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            text-align: center;
+            transition: 0.3s;
+            z-index: 100;
+        }
+
+        .pulse { animation: pulse-animation 2s infinite; }
+
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0 rgba(243, 240, 231, 0.7); }
+            70% { box-shadow: 0 0 0 40px rgba(243, 240, 231, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(243, 240, 231, 0); }
+        }
+
+        .info-panel {
+            position: fixed;
+            bottom: 30px;
+            background: #f3f0e7;
+            width: 85%;
+            max-width: 600px;
+            border-radius: 25px;
+            padding: 25px;
+            display: none;
+            text-align: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
+            border: 2px solid #8c6d5e;
+        }
+
+        .status-text { color: #433129; font-weight: bold; font-size: 20px; margin-bottom: 10px; }
+        .transcript-text { color: #666; font-style: italic; font-size: 16px; margin-bottom: 5px; }
+        .ai-response { color: #8c6d5e; font-size: 18px; font-weight: 600; }
+        .back-home-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px; /* ليظهر في الجهة اليمنى لأن الصفحة RTL */
+    background: #8c6d5e;
+    color: white;
+    border: 4px solid #f3f0e7;
+    border-radius: 30px;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1000; /* لضمان ظهوره فوق أي عناصر أخرى */
+    transition: 0.3s;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.back-home-btn:hover {
+    background: #433129;
+    transform: scale(1.05);
+}
+    </style>
+</head>
+
+<body onclick="startBaseera()">
+
+    <div id="bigBtn" class="main-assistant-btn pulse">
+        <span style="font-size: 90px;">🎧</span>
+        <br>
+        اضغط للتحدث <br> مع بصيرة
+    </div>
+
+    <div id="infoPanel" class="info-panel">
+        <div id="status" class="status-text">أنا أسمعك الآن...</div>
+        <div id="user-said" class="transcript-text"></div>
+        <div id="ai-reply" class="ai-response"></div>
+    </div>
+    <!-- زر الرجوع للصفحة الرئيسية -->
+<button class="back-home-btn" onclick="window.location.href='home.html'">
+    🏠 الرجوع للرئيسية
+</button>
+
+<script>
+const synth = window.speechSynthesis;
+let recognition;
+let isStarted = false;
+
+// 🧠 "عقل بصيرة" المحدث بجميع الأيقونات الجديدة
+// 🧠 "عقل بصيرة" المحدث بالإجابات المحددة
+const baseeraBrain = [
+    {
+        keywords: ["وظيفة الأيقونة", "الوقوف عليها", "اعرف الايقونات", "شرح الايقونات"],
+        reply: "الموقع يدعم خاصية النطق التلقائي؛ بمجرد تمرير الفأرة فوق أي أيقونة، ستسمع صوتاً يشرح لك اسم الأيقونة ووظيفتها."
+    },
+    {
+        keywords: ["رادار", "عائق", "كاميرا", "تعرف"],
+        reply: "أيقونة الرادار هي عينك الذكية؛ تقوم بفتح الكاميرا للتعرف فوراً على الأشياء، الألوان، ومشاعر الأشخاص من حولك."
+    },
+    {
+        keywords: ["منبه", "ساعة", "موعد", "تذكير"],
+        reply: "أيقونة المنبه تُستخدم لضبط المواعيد والمهام اليومية لتذكيرك بها صوتياً في وقتها المحدد."
+    },
+    {
+        keywords: ["طقس", "جو", "حر", "برد", "مطر"],
+        reply: "أيقونة الطقس ستخبرك بحالة الجو الحالية ودرجات الحرارة لتعرف ماذا ترتدي قبل الخروج."
+    },
+    {
+        keywords: ["مكتبة", "كتاب", "قراءة", "قصة"],
+        reply: "أيقونة المكتبة تحتوي على المصادر التعليمية والكتب الرقمية التي تدعم مسيرتك الدراسية أو المعرفية."
+    },
+    {
+        keywords: ["هدوء", "الهدوء", "استرخاء", "تعبان"],
+        reply: "استخدم أيقونة الهدوء عندما تحتاج للحصول على استراحة؛ ستجد فيها أصواتاً مريحة وتمارين تساعدك على الاسترخاء وتقليل التوتر."
+    },
+    {
+        keywords: ["أفق", "الأفق", "استكشاف"],
+        reply: "أيقونة الأفق هي بوابتك للاستكشاف والبحث عن كل ما هو جديد ومستقبلي خارج نطاق المهام اليومية."
+    },
+    {
+        keywords: ["تباين", "التباين", "لون الموقع", "الخط"],
+        reply: "أيقونة التباين مخصصة لراحة عينك؛ يمكنك من خلالها تغيير ألوان الموقع لتناسب رؤيتك."
+    },
+    {
+        keywords: ["ملهمون", "قصص", "نجاح"],
+        reply: "ستجد في أيقونة ملهمون قصص نجاح لأشخاص تحدوا الصعاب وحققوا إنجازات كبيرة لتكون حافزاً لك."
+    },
+    {
+        keywords: ["منسق", "الفريق", "الفرق", "ترتيب"],
+        reply: "المنسق يساعدك في ترتيب جدولك وتنظيم مهامك، بينما الفريق تعرفك على الأشخاص المبدعين الذين قاموا ببناء موقع بصيرة لخدمتك."
+    },
+    {
+        keywords: ["دعم", "الدعم", "مساعدة", "اسئلة"],
+        reply: "أيقونة الدعم هي دليلك الشخصي للإجابة على أي تساؤل يدور في ذهنك حول كيفية استخدام الموقع وحل المشكلات التقنية."
+    },
+    {
+        keywords: ["مين", "أنت", "بصيرة"],
+        reply: "أنا بصيرة، مساعدك الشخصي الذكي، صُممت لأكون عينك التي ترى بها العالم من حولك."
+    }
+];
+function say(text) {
+    synth.cancel();
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = "ar-SA";
+    msg.rate = 1.0; 
+    synth.speak(msg);
+}
+
+function startBaseera() {
+    if (!isStarted) {
+        say("أهلاً بك في نظام بصيرة. يمكنك سؤالي عن أي أيقونة مثل الرادار، الأفق، الهدوء، أو حتى حالة الطقس. أنا معك الآن.");
+        document.getElementById('infoPanel').style.display = "block";
+        isStarted = true;
+        return;
+    }
+    talkToAI();
+}
+
+function talkToAI() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert("المتصفح لا يدعم المايكروفون");
+        return;
+    }
+
+    recognition = new SpeechRecognition();
+    recognition.lang = "ar-SA";
+    
+    recognition.onstart = () => {
+        document.getElementById('status').innerText = "🎤 أنا أسمعك...";
+        document.getElementById('bigBtn').style.background = "#A52A2A";
+    };
+
+    recognition.onresult = (e) => {
+        const query = e.results[0][0].transcript.toLowerCase();
+        document.getElementById('user-said').innerText = "أنت قلت: " + query;
+        
+        let reply = "";
+        
+        const found = baseeraBrain.find(item => 
+            item.keywords.some(key => query.includes(key))
+        );
+
+        if (found) {
+            reply = found.reply;
+        } else {
+            reply = "سؤال جيد، بخصوص " + query + " يمكنني مساعدتك في شرح الأيقونات مثل الرادار أو المنبه أو الهدوء. ماذا تريد أن تعرف؟";
+        }
+
+        document.getElementById('ai-reply').innerText = "بصيرة: " + reply;
+        document.getElementById('status').innerText = "تمت الإجابة ✅";
+        say(reply);
+    };
+    
+
+    recognition.onend = () => {
+        document.getElementById('bigBtn').style.background = "#8c6d5e";
+    };
+
+    recognition.start();
+}
+</script>
+</body>
+</html>

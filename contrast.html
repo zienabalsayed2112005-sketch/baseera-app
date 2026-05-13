@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التباين | بَصيرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --m: #3D2B1F; --c: #F5EFE6; --g: #C69774; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        
+        body { 
+            background: var(--c); min-height: 100vh; 
+            display: flex; flex-direction: column; transition: 0.3s; 
+        }
+
+        /* هيدر احترافي */
+        .nav { 
+            background: var(--m); padding: 25px; color: var(--c); 
+            display: flex; justify-content: space-between; align-items: center;
+            border-radius: 0 0 30px 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* تنسيق زر العودة الموحد */
+        .back-link { 
+            color: var(--m); 
+            text-decoration: none; 
+            font-weight: 900; 
+            background: var(--c); 
+            padding: 8px 25px; 
+            border-radius: 50px; 
+            font-size: 0.9rem;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .back-link:hover { 
+            background: var(--g); 
+            color: var(--m);
+            transform: scale(1.05);
+        }
+
+        .container { padding: 20px; flex: 1; }
+        .title { color: var(--m); font-size: 1.8rem; margin: 15px 0; text-align: center; }
+
+        /* شبكة أنظمة الألوان */
+        .modes-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 20px; }
+        
+        .mode-card {
+            padding: 25px; border-radius: 25px; border: 3px solid var(--m);
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
+        }
+
+        .mode-card h2 { font-size: 1.4rem; font-weight: 900; }
+        .mode-card span { font-size: 2rem; }
+
+        /* أنماط الألوان */
+        .default { background: #F5EFE6; color: #3D2B1F; border-color: #C69774; }
+        .dark { background: #1a1a1a; color: #ffffff; border-color: #444; }
+        .high-vis { background: #000000; color: #ffff00; border-color: #ffff00; }
+        .soft-blue { background: #e3f2fd; color: #0d47a1; border-color: #2196f3; }
+
+        .hint { text-align: center; margin-top: 30px; color: var(--g); font-weight: 700; }
+    </style>
+</head>
+<body onload="welcome()">
+
+    <header class="nav" id="header">
+        <!-- الزر المعدل -->
+        <a href="home.html" class="back-link" onmouseenter="speak('العودة للقائمة الرئيسية')">العودة للرئيسية</a>
+        <h2>إعدادات التباين</h2>
+    </header>
+
+    <div class="container">
+        <h1 class="title" id="pageTitle">اختر مظهرك المريح</h1>
+        
+        <div class="modes-grid">
+            <div class="mode-card default" onclick="changeMode('default', 'الوضع الافتراضي مفعّل')" onmouseenter="speak('الوضع الهادئ')">
+                <h2>الوضع الهادئ</h2>
+                <span>🟤</span>
+            </div>
+
+            <div class="mode-card dark" onclick="changeMode('dark', 'تم تفعيل الوضع الليلي')" onmouseenter="speak('الوضع المظلم')">
+                <h2>الوضع المظلم</h2>
+                <span>🌙</span>
+            </div>
+
+            <div class="mode-card high-vis" onclick="changeMode('high-vis', 'تم تفعيل وضع التباين العالي، أصفر على أسود')" onmouseenter="speak('تباين عالي')">
+                <h2>تباين عالي</h2>
+                <span>🟡</span>
+            </div>
+
+            <div class="mode-card soft-blue" onclick="changeMode('soft-blue', 'تم تفعيل وضع القراءة المريح')" onmouseenter="speak('وضع القراءة')">
+                <h2>وضع القراءة</h2>
+                <span>🔵</span>
+            </div>
+        </div>
+
+        <p class="hint">اضغط على النمط لتطبيقه فوراً</p>
+    </div>
+
+    <script>
+        function speak(t) {
+            window.speechSynthesis.cancel();
+            const m = new SpeechSynthesisUtterance(t);
+            m.lang = 'ar-SA'; m.rate = 1.1; m.pitch = 1.0;
+            window.speechSynthesis.speak(m);
+        }
+
+       function changeMode(mode, msg) {
+    const body = document.body;
+    const title = document.getElementById('pageTitle');
+
+    // الكود الأصلي بتاعك لتغيير الألوان
+    if (mode === 'dark') {
+        body.style.background = '#1a1a1a';
+        title.style.color = '#fff';
+    } else if (mode === 'high-vis') {
+        body.style.background = '#000';
+        title.style.color = '#ff0';
+    } else if (mode === 'soft-blue') {
+        body.style.background = '#e3f2fd';
+        title.style.color = '#0d47a1';
+    } else {
+        body.style.background = '#F5EFE6';
+        title.style.color = '#3D2B1F';
+    }
+
+    // السطر الجديد اللي هيحفظ الاختيار للمشروع كله
+    localStorage.setItem('baseeraTheme', mode); 
+
+    speak(msg);
+}
+        function welcome() {
+            setTimeout(() => {
+                speak("أهلاً بك في إعدادات التباين. مرر يدك واختر الوضع المريح لنظرك.");
+            }, 500);
+        }
+		
+    </script>
+</body>
+</html>

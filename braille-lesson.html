@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعلم حروف برايل | أكاديمية بَصيرة</title>
+    <style>
+        :root {
+            --deep-brown: #2D1E17;
+            --gold: #D4A373;
+            --beige: #F5EFE6;
+            --white: #FFFFFF;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+
+        body { 
+            background-color: var(--beige); 
+            color: var(--deep-brown); 
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(to bottom, var(--deep-brown), #4A3428);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+        }
+        header h1 { color: var(--gold); font-size: 2.5rem; font-weight: 900; }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* شبكة الحروف */
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .char-card {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+            border: 3px solid transparent;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .char-card:hover {
+            border-color: var(--gold);
+            background: var(--deep-brown);
+            transform: translateY(-5px);
+        }
+
+        .char-card:hover .char-main { color: var(--gold); }
+
+        .char-main {
+            font-size: 3.5rem;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .braille-cell {
+            display: grid;
+            grid-template-columns: repeat(2, 18px);
+            gap: 8px;
+            justify-content: center;
+            background: rgba(212, 163, 115, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+
+        .dot.active {
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+        }
+
+        .nav-footer {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .btn-back {
+            padding: 15px 60px;
+            background: var(--deep-brown);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 50px;
+            border: 3px solid var(--gold);
+            font-weight: 900;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+       
+        .btn-back:hover { background: var(--gold); color: var(--deep-brown); }
+        /* تنسيق قسم الشرح النصي أسفل الصفحة */
+    .lesson-details-text {
+        max-width: 1400px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .article-card {
+        background: var(--white);
+        padding: 50px;
+        border-radius: 40px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+        border-bottom: 8px solid var(--gold);
+    }
+
+    .article-card h2 {
+        color: var(--deep-brown);
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .main-p {
+        font-size: 1.3rem;
+        line-height: 1.9;
+        color: #555;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 40px auto;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .detail-box {
+        background: var(--beige);
+        padding: 30px;
+        border-radius: 25px;
+        position: relative;
+        border: 1px solid rgba(212, 163, 115, 0.2);
+    }
+
+    .num-circle {
+        width: 40px;
+        height: 40px;
+        background: var(--gold);
+        color: var(--deep-brown);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .detail-box h3 {
+        color: var(--deep-brown);
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+    }
+
+    .importance-note {
+        margin-top: 40px;
+        padding: 25px;
+        background: rgba(45, 30, 23, 0.05);
+        border-right: 5px solid var(--deep-brown);
+        border-radius: 10px;
+    }
+
+    .importance-note strong {
+        color: var(--deep-brown);
+        font-size: 1.2rem;
+        display: block;
+        margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body onload="startLessonSequence()">
+
+    <header>
+        <h1>تعلم حروف برايل العربية</h1>
+    </header>
+<section class="lesson-details-text">
+        <div class="article-card">
+            <h2>دليل تعلم لغة برايل للمبصرين</h2>
+            <p class="main-p">
+                إذا كنت تتساءل كيف يقرأ المكفوفون هذه النقاط، فالأمر يشبه "الشفرة" المنطقية. لغة برايل ليست لغة منفصلة بل هي **طريقة عرض** للحروف العربية.
+            </p>
+
+            <div class="details-grid">
+                <div class="detail-box">
+                    <div class="num-circle">1</div>
+                    <h3>هيكل الخلية</h3>
+                    <p>تتكون خلية برايل من 6 نقاط (3 على اليمين و3 على اليسار). من خلال بروز بعض هذه النقاط واختفاء البعض الآخر، يتشكل الحرف.</p>
+                </div>
+
+                <div class="detail-box">
+                    <div class="num-circle">2</div>
+                    <h3>أرقام النقاط</h3>
+                    <p>النقاط في العمود الأيمن مرقمة (1، 2، 3) من الأعلى للأسفل. والعمود الأيسر مرقم (4، 5، 6) من الأعلى للأسفل أيضاً.</p>
+                </div>
+
+                <div class="detail-box">
+                    <div class="num-circle">3</div>
+                    <h3>قاعدة الحروف</h3>
+                    <p>معظم الحروف تبدأ بالنقاط العلوية. مثلاً حرف "الألف" هو النقطة 1 فقط، بينما حرف "الباء" هو النقطة 1 و 2 معاً.</p>
+                </div>
+            </div>
+
+            <div class="importance-note">
+                <strong>لماذا نتعلم برايل؟</strong>
+                <p>تساعد لغة برايل الكفيف على القراءة والكتابة باستقلالية تامة، مما يسهل دخوله سوق العمل، التعليم، وحتى استخدام الأدوية والمنتجات المكتوب عليها بالنقاط البارزة.</p>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="alphabet-grid">
+            <div class="char-card" onmouseenter="speak('ألف، النقطة واحد')">
+                <span class="char-main">أ</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('باء، النقاط واحد واثنين')">
+                <span class="char-main">ب</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('تاء، النقاط اثنين وثلاثة واربعة وخمسة')">
+                <span class="char-main">ت</span>
+                <div class="braille-cell"><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('ثاء، النقاط واحد واربعة وخمسة وستة')">
+                <span class="char-main">ث</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('جيم، النقاط اثنين واربعة وخمسة')">
+                <span class="char-main">ج</span>
+                <div class="braille-cell"><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('حاء، النقاط واحد واثنين وخمسة')">
+                <span class="char-main">ح</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('خاء، النقاط واحد وثلاثة واربعة وستة')">
+                <span class="char-main">خ</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('دال، النقاط واحد واربعة وخمسة')">
+                <span class="char-main">د</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('ذال، النقاط اثنين وثلاثة واربعة وستة')">
+                <span class="char-main">ذ</span>
+                <div class="braille-cell"><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('راء، النقاط واحد واثنين وثلاثة وخمسة')">
+                <span class="char-main">ر</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('زاي، النقاط واحد وثلاثة وخمسة وستة')">
+                <span class="char-main">ز</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('سين، النقاط اثنين وثلاثة واربعة')">
+                <span class="char-main">س</span>
+                <div class="braille-cell"><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('شين، النقاط واحد واربعة وستة')">
+                <span class="char-main">ش</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('صاد، النقاط واحد واثنين وثلاثة واربعة وخمسة')">
+                <span class="char-main">ص</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('ضاد، النقاط واحد واثنين وثلاثة واربعة وستة')">
+                <span class="char-main">ض</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('طاء، النقاط اثنين وثلاثة واربعة وخمسة وستة')">
+                <span class="char-main">ط</span>
+                <div class="braille-cell"><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('ظاء، النقاط واحد واثنين وثلاثة واربعة وخمسة وستة')">
+                <span class="char-main">ظ</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('عين، النقاط واحد واثنين وثلاثة وخمسة وستة')">
+                <span class="char-main">ع</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('غين، النقاط واحد واثنين وستة')">
+                <span class="char-main">غ</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('فاء، النقاط واحد واثنين واربعة')">
+                <span class="char-main">ف</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('قاف، النقاط واحد واثنين وثلاثة واربعة وخمسة')">
+                <span class="char-main">ق</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('كاف، النقاط واحد وثلاثة')">
+                <span class="char-main">ك</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('لام، النقاط واحد واثنين وثلاثة')">
+                <span class="char-main">ل</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('ميم، النقاط واحد وثلاثة واربعة')">
+                <span class="char-main">م</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('نون، النقاط واحد وثلاثة واربعة وخمسة')">
+                <span class="char-main">ن</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('هاء، النقاط واحد واثنين وخمسة')">
+                <span class="char-main">هـ</span>
+                <div class="braille-cell"><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('واو، النقاط اثنين وثلاثة واربعة وخمسة وستة')">
+                <span class="char-main">واو</span>
+                <div class="braille-cell"><div class="dot"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div></div>
+            </div>
+            <div class="char-card" onmouseenter="speak('ياء، النقاط اثنين واربعة')">
+                <span class="char-main">ي</span>
+                <div class="braille-cell"><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-footer">
+        <a href="lessons.html" class="btn-back" onmouseenter="speak('العودة لقسم الدروس')">العودة لقسم الدروس</a>
+    </div>
+
+    <script>
+        function speak(text, callback) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-EG';
+            if (callback) {
+                utterance.onend = callback;
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function startLessonSequence() {
+            // أولاً: تعريف الصفحة
+            speak("أهلاً بك في قسم رحلة النور، نحن الآن في صفحة تعلم حروف برايل العربية.", function() {
+                // ثانياً: شرح الدرس بالتفصيل
+                const detailedExplanation = `
+                    قبل أن نبدأ، دعنا نفهم كيف تعمل لغة برايل. 
+                    تعتمد هذه اللغة على خلية صغيرة مكونة من ست نقاط، مرتبة في صفين متوازيين. 
+                    العمود الأيمن يحتوي على النقاط رقم واحد واثنين وثلاثة من الأعلى للأسفل. 
+                    والعمود الأيسر يحتوي على النقاط رقم أربعة وخمسة وستة. 
+                    كل حرف عربي له شكل مميز يتكون من بروز بعض هذه النقاط الستة. 
+                    على سبيل المثال، حرف الألف هو بروز النقطة الأولى فقط. 
+                    والآن، اللوحة أمامك جاهزة، مرر الماوس أو المس أي حرف لتسمع اسمه وتوزيع نقاطه، واستمتع بتجربتك الأولى مع برايل.
+                `;
+                setTimeout(() => {
+                    speak(detailedExplanation);
+                }, 1000);
+            });
+        }
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

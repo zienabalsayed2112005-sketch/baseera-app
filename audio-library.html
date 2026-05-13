@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية بَصيرة | المكتبة والموسوعة الشاملة</title>
+    <style>
+        :root {
+            --deep-brown: #2D1E17;
+            --gold: #D4A373;
+            --white: #FFFFFF;
+            --google-blue: #1a73e8;
+            --bg-gray: #f8f9fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-gray); color: #202124; line-height: 1.8; }
+
+        header {
+            background: var(--deep-brown);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 6px solid var(--gold);
+        }
+        header h1 { color: var(--gold); font-size: 3rem; margin-bottom: 15px; }
+        header p { color: var(--white); font-size: 1.3rem; opacity: 0.9; }
+
+        .container { width: 95%; max-width: 1400px; margin: 0 auto; padding: 50px 0; }
+
+        .section-label {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            border-right: 12px solid var(--gold);
+            margin-bottom: 45px;
+            font-size: 2.4rem;
+            color: var(--deep-brown);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* --- قسم الكتب (6 كتب) --- */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 120px;
+        }
+
+        .book-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #dadce0;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+        .book-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        
+        .card-visual { background: #202124; height: 160px; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; }
+        
+        .play-trigger {
+            width: 70px; height: 70px; background: var(--gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: 5px solid white; position: absolute; bottom: -35px;
+            color: white; font-size: 1.8rem;
+        }
+
+        .book-details { padding: 55px 30px 35px; flex-grow: 1; }
+        .book-details h3 { font-size: 1.8rem; margin-bottom: 20px; color: var(--google-blue); border-bottom: 2px solid #f1f3f4; padding-bottom: 10px; }
+        .book-description { color: #3c4043; font-size: 1.25rem; text-align: justify; line-height: 1.9; }
+
+        /* --- قسم المقالات العريضة --- */
+        .articles-stack { display: flex; flex-direction: column; gap: 60px; }
+        
+        .full-article {
+            background: #fff;
+            padding: 60px;
+            border-radius: 25px;
+            border: 1px solid #dadce0;
+            width: 100%;
+        }
+        .article-top { border-bottom: 3px solid var(--bg-gray); margin-bottom: 30px; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .article-top h2 { font-size: 2.8rem; color: #1a0dab; }
+        
+        .voice-btn {
+            background: var(--google-blue); color: white; border: none; padding: 15px 35px;
+            border-radius: 50px; font-size: 1.1rem; cursor: pointer; font-weight: bold;
+        }
+
+        .article-text { font-size: 1.6rem; color: #3c4043; text-align: justify; line-height: 2.3; }
+        .sub-title { display: block; font-size: 2rem; margin: 40px 0 20px; color: var(--deep-brown); border-right: 6px solid var(--gold); padding-right: 15px; font-weight: bold; }
+
+        .back-home {
+            display: block; width: fit-content; margin: 80px auto;
+            padding: 25px 120px; background: var(--deep-brown); color: var(--gold);
+            text-decoration: none; border-radius: 15px; font-size: 1.6rem; font-weight: bold;
+            border: 3px solid var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>مكتبة بَصيرة الرقمية</h1>
+    <p>استمتعي بتجربة قراءة واستماع استثنائية بعرض كامل ومحتوى مثرٍ</p>
+</header>
+
+<div class="container">
+
+    <!-- قسم الكتب (6 كتب كما هي) -->
+    <div class="section-label">قسم الكتب الصوتية المحدثة</div>
+    <div class="books-grid">
+        <div class="book-card">
+            <div class="card-visual">📙<button class="play-trigger" onclick="talk('t1', this)">▶</button></div>
+            <div class="book-details">
+                <h3>الأيام - لعميد الأدب العربي</h3>
+                <p class="book-description" id="t1">يتحدث طه حسين بصدق جارح عن طفولته ومعاناته مع فقدان البصر، وكيف استطاع بالإرادة الحديدية أن يتخطى جدران العزلة والفقر ليتعلم في الأزهر ثم في فرنسا. إنه ليس مجرد قصة حياة، بل هو دعوة للأمل والتمرد على اليأس وطلب العلم مهما كانت الظروف.</p>
+            </div>
+        </div>
+        <div class="book-card">
+            <div class="card-visual">📘<button class="play-trigger" onclick="talk('t2', this)">▶</button></div>
+            <div class="book-details">
+                <h3>مقدمة ابن خلدون التاريخية</h3>
+                <p class="book-description" id="t2">يناقش هذا العمل طبائع العمران البشري، وكيف تنشأ الدول وتزدهر ثم تسقط. يتحدث ابن خلدون عن مفهوم "العصبية" وأثر البيئة على أخلاق الشعوب، مما يجعله مرجعاً فلسفياً وعلمياً لا غنى عنه لفهم حركة التاريخ وتطور المجتمعات عبر العصور.</p>
+            </div>
+        </div>
+        <div class="book-card">
+            <div class="card-visual">📗<button class="play-trigger" onclick="talk('t3', this)">▶</button></div>
+            <div class="book-details">
+                <h3>قوة العادة - تشارلز دوهيج</h3>
+                <p class="book-description" id="t3">يكشف الكتاب عن الجوانب العلمية التي تفسر لماذا نفعل ما نفعله. يتحدث عن "حلقة العادة" المكونة من الإشارة، الروتين، والمكافأة. ويشرح كيف يمكننا إعادة تشكيل أدمغتنا عبر تغيير عاداتنا الصغيرة، مما يؤدي إلى تغييرات جذرية في حياتنا.</p>
+            </div>
+        </div>
+        <div class="book-card">
+            <div class="card-visual">📒<button class="play-trigger" onclick="talk('t4', this)">▶</button></div>
+            <div class="book-details">
+                <h3>العبرات - مصطفى المنفلوطي</h3>
+                <p class="book-description" id="t4">مجموعة قصصية فريدة تتميز بأسلوب أدبي رقيق ولغة عربية فصحى عذبة. يتحدث المنفلوطي عن المظالم الاجتماعية والآلام الإنسانية، محاولاً بث روح الفضيلة والرحمة في قلوب القراء، مما يجعله من الكلاسيكيات التي تهذب النفس وتسمو بالمشاعر.</p>
+            </div>
+        </div>
+        <div class="book-card">
+            <div class="card-visual">📕<button class="play-trigger" onclick="talk('t5', this)">▶</button></div>
+            <div class="book-details">
+                <h3>حياة في الإدارة - غازي القصيبي</h3>
+                <p class="book-description" id="t5">يقدم القصيبي خلاصة تجربته العريضة في الإدارة والوزارة بأسلوب ساخر وممتع. يتحدث عن العقبات التي تواجه الإداري الناجح وكيفية التعامل مع البيروقراطية، مقدماً دروساً إنسانية وعملية حول فن القيادة واتخاذ القرار والنزاهة في العمل.</p>
+            </div>
+        </div>
+        <div class="book-card">
+            <div class="card-visual">📙<button class="play-trigger" onclick="talk('t6', this)">▶</button></div>
+            <div class="book-details">
+                <h3>فن الحرب - سون تزو</h3>
+                <p class="book-description" id="t6">رغم أنه كُتب كدليل عسكري، إلا أن نصائحه تُطبق في الإدارة والحياة الشخصية. يتحدث عن أهمية التخطيط ومعرفة الذات والخصم، مؤكداً أن أعظم انتصار هو الذي يتحقق دون قتال، مما يعلمنا الحكمة والصبر في مواجهة تحديات الحياة.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم المقالات (5 مقالات كاملة ومطولة) -->
+    <div class="section-label">قسم المقالات الموسوعية (محتوى مكثف)</div>
+    
+    <div class="articles-stack">
+        
+        <!-- مقال 1 -->
+        <article class="full-article">
+            <div class="article-top">
+                <h2>ثورة الذكاء الاصطناعي والبيانات الضخمة</h2>
+                <button class="voice-btn" onclick="talk('art1', this)">🔊 استماع للمقال</button>
+            </div>
+            <div class="article-text" id="art1">
+                يعتبر الذكاء الاصطناعي المحرك الفعلي للثورة الصناعية الرابعة، حيث لم يعد مجرد رفاهية تكنولوجية بل أصبح ضرورة حتمية في كافة المجالات. إن القدرة الهائلة على معالجة مليارات الجيجابايت من البيانات في ثوانٍ معدودة أتاحت للبشرية ابتكارات تفوق الخيال، بدءاً من تشخيص الأمراض بدقة متناهية وصولاً إلى إدارة المدن الذكية وتطوير سلاسل التوريد العالمية.
+                <span class="sub-title">تحليل البيانات والتعلم الآلي</span>
+                تعتمد الأنظمة الذكية اليوم على "خوارزميات التعلم العميق" التي لا تكتفي بتنفيذ الأوامر المبرمجة مسبقاً، بل تتعلم ذاتياً من التجارب والبيانات السابقة لتتنبأ بالنتائج المستقبلية بدقة مذهلة. هذا التطور ساهم بشكل مباشر في تقليل الهدر والأخطاء البشرية، ووفر أدوات إبداعية جديدة للمصممين والمبرمجين لتطوير حلول رقمية تتسم بالمرونة والقدرة على التكيف مع احتياجات المستخدم المتغيرة لحظياً.
+            </div>
+        </article>
+
+        <!-- مقال 2 -->
+        <article class="full-article">
+            <div class="article-top">
+                <h2>سيكولوجية الذات وطريق النجاح الشخصي</h2>
+                <button class="voice-btn" onclick="talk('art2', this)">🔊 استماع للمقال</button>
+            </div>
+            <div class="article-text" id="art2">
+                إن فهم أعماق النفس البشرية هو الحجر الأساس الذي يُبنى عليه أي نجاح مهني أو شخصي مستدام. يدرس علم النفس السلوكي والتحليلي كيف تتشكل دوافعنا الداخلية، وكيف تؤثر معتقداتنا الخفية على قراراتنا اليومية. من هنا تبرز أهمية بناء "الصلابة النفسية" التي تمكن الفرد من مواجهة ضغوطات العصر الرقمي المتسارع دون فقدان الهوية أو التوازن الداخلي.
+                <span class="sub-title">الذكاء العاطفي والاجتماعي</span>
+                لم يعد النجاح مقتصرًا على المهارات التقنية (Hard Skills)، بل أصبح "الذكاء العاطفي" هو المعيار الأهم للقيادة والتميز. القدرة على فهم انفعالات الآخرين، والتعاطف الواعي، وبناء جسور الثقة في فرق العمل، هي ما يصنع الفارق في بيئات العمل الحديثة. إن توازن الفرد بين طموحه العملي وسلامه النفسي هو ما يضمن له استمرارية الإبداع والقدرة على التأثير الإيجابي في محيطه والمجتمع ككل.
+            </div>
+        </article>
+
+        <!-- مقال 3 -->
+        <article class="full-article">
+            <div class="article-top">
+                <h2>فلسفة التصميم وتجربة المستخدم (UX)</h2>
+                <button class="voice-btn" onclick="talk('art3', this)">🔊 استماع للمقال</button>
+            </div>
+            <div class="article-text" id="art3">
+                التصميم في جوهره ليس مجرد تنسيق للألوان أو اختيار للخطوط الجذابة، بل هو لغة تواصل صامتة تهدف إلى حل المشكلات وتسهيل حياة البشر. في عالم التطبيقات والمواقع المعقدة، تبرز أهمية "تصميم تجربة المستخدم" (UX Design) لضمان أن يكون التفاعل مع المنتج الرقمي سلساً، مريحاً، وذا قيمة حقيقية، حيث يُبنى كل عنصر بناءً على دراسات سلوكية دقيقة لاحتياجات المستخدم.
+                <span class="sub-title">المينيماليزم والجمال الوظيفي</span>
+                تتجه التوجهات الحديثة نحو "البساطة المطلقة" أو المينيماليزم، حيث يتم التخلص من كل ما هو زائد للتركيز على الجوهر الوظيفي. هذه الفلسفة تعكس رغبة المستخدم المعاصر في الهروب من الفوضى البصرية والوصول إلى المعلومة بأقل جهد ممكن. إن المصمم الناجح هو من يستطيع خلق توازن دقيق بين الجمالية البصرية (UI) والفاعلية الوظيفية (UX)، مما يحول المنتج من مجرد أداة إلى تجربة إنسانية متكاملة.
+            </div>
+        </article>
+
+        <!-- مقال 4 -->
+        <article class="full-article">
+            <div class="article-top">
+                <h2>إرث العلوم في الحضارة العربية والإسلامية</h2>
+                <button class="voice-btn" onclick="talk('art4', this)">🔊 استماع للمقال</button>
+            </div>
+            <div class="article-text" id="art4">
+                وضعت الحضارة العربية والإسلامية حجر الأساس للنهضة العلمية التي نعيش ثمارها اليوم في كافة المجالات التقنية والطبية. علماء فحول مثل الخوارزمي، الذي أسس علم الجبر والخوارزميات، وابن الهيثم، رائد علم البصريات والمنهج التجريبي، قدموا للبشرية نظريات ومبادئ لا تزال تدرس في أعرق الجامعات العالمية وتعتمد عليها التكنولوجيا الحديثة بشكل جذري.
+                <span class="sub-title">المنهج العلمي والريادة الفكرية</span>
+                ما يميز تلك الحقبة الذهبية هو اعتمادها المطلق على "التجربة والملاحظة" بدلاً من التخمين، مما أدى لثورات في الطب والجراحة وعلم الفلك والكيمياء. إن إعادة قراءة هذا التاريخ ليست مجرد فخر بالماضي، بل هي استلهام لقدرة العقل العربي على الإبداع والقيادة المعرفية عندما تتوفر له بيئة تدعم البحث العلمي والنقد البناء، وهو ما نحتاجه اليوم لإعادة إحياء دورنا الريادي في العالم الرقمي.
+            </div>
+        </article>
+
+        <!-- مقال 5 -->
+        <article class="full-article">
+            <div class="article-top">
+                <h2>أهمية القراءة والتعلم الذاتي المستمر</h2>
+                <button class="voice-btn" onclick="talk('art5', this)">🔊 استماع للمقال</button>
+            </div>
+            <div class="article-text" id="art5">
+                في عالم يتغير فيه المشهد التكنولوجي والعملي كل بضع ساعات، أصبح "التعلم الذاتي" هو المهارة الأهم للبقاء والتميز. القراءة لم تعد مجرد هواية لتمضية الوقت، بل هي الغذاء الأساسي للعقل والوسيلة الفعالة لتطوير ملكة النقد والتحليل. إن الاطلاع المستمر يوسع المدارك ويسمح لنا برؤية العالم من زوايا متعددة، مما يكسر جمود التفكير ويفتح أبواباً للإبداع والابتكار في مشاريعنا الشخصية والمهنية.
+                <span class="sub-title">بناء العقلية المتطورة</span>
+                من خلال الغوص في بطون الكتب والمقالات الرصينة، نكتسب خبرات آلاف السنين في دقائق معدودة، مما يوفر علينا سنوات من التخبط. إن الشخص الذي يجعل من التعلم روتيناً يومياً هو وحده القادر على التكيف مع تقلبات سوق العمل والتحولات الاجتماعية. القراءة تبني عقلاً متفتحاً، قادراً على الحوار والابتكار، وهي الجسر الحقيقي الذي يربط بين واقعنا الحالي وطموحاتنا المستقبلية الكبرى.
+            </div>
+        </article>
+
+    </div>
+
+    <a href="academy.html" class="back-home">العودة للرئيسية</a>
+
+</div>
+
+<script>
+    let synth = window.speechSynthesis;
+    function talk(id, btn) {
+        if (synth.speaking) {
+            synth.cancel();
+            if (btn.innerText.includes("⏹") || btn.innerText.includes("توقف")) return;
+        }
+        const text = document.getElementById(id).innerText;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-SA';
+        utter.rate = 0.95;
+        utter.onstart = () => {
+            if(btn.className === 'voice-btn') btn.innerHTML = "⏹ توقف الآن";
+            else btn.innerText = "⏹";
+        };
+        utter.onend = () => {
+            if(btn.className === 'voice-btn') btn.innerHTML = "🔊 استماع للمقال";
+            else btn.innerText = "▶";
+        };
+        synth.speak(utter);
+    }
+</script>
+<script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

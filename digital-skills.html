@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المهارات الرقمية | أكاديمية بَصيرة</title>
+    <style>
+        :root {
+            --deep-brown: #2D1E17;
+            --gold: #D4A373;
+            --beige: #F5EFE6;
+            --white: #FFFFFF;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+
+        body { 
+            background-color: var(--beige); 
+            color: var(--deep-brown); 
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(to bottom, var(--deep-brown), #4A3428);
+            padding: 35px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        header h1 { color: var(--gold); font-size: 2.6rem; font-weight: 900; }
+
+        .container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* شبكة الكروت التفاعلية */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .skill-card {
+            background: var(--white);
+            border-radius: 35px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 3px solid transparent;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .skill-card:hover {
+            border-color: var(--gold);
+            background: var(--deep-brown);
+            transform: translateY(-12px);
+        }
+
+        .skill-card:hover h3 { color: var(--gold); }
+        .skill-card:hover p { color: var(--beige); }
+
+        .icon-box {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            display: block;
+            transition: 0.3s;
+        }
+        .skill-card:hover .icon-box { transform: scale(1.1); }
+
+        .skill-card h3 { 
+            color: var(--deep-brown); 
+            font-size: 1.6rem; 
+            margin-bottom: 15px; 
+            font-weight: 800; 
+        }
+
+        .skill-card p { 
+            color: #666; 
+            font-size: 1.05rem; 
+            line-height: 1.5;
+        }
+
+        /* قسم الشرح النصي المفصل للمبصرين */
+        .detailed-article {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            border-right: 10px solid var(--gold);
+            margin-bottom: 50px;
+        }
+
+        .detailed-article h2 { 
+            color: var(--deep-brown); 
+            font-size: 2.2rem; 
+            margin-bottom: 30px; 
+            border-bottom: 2px solid var(--beige); 
+            padding-bottom: 15px;
+            text-align: center;
+        }
+        
+        .article-section { margin-bottom: 35px; }
+        
+        .article-section h3 { 
+            color: var(--gold); 
+            font-size: 1.6rem; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+        }
+        
+        .article-section h3::before { 
+            content: "✦"; 
+            margin-left: 10px; 
+            font-size: 1.2rem; 
+        }
+
+        .article-section p { 
+            font-size: 1.2rem; 
+            color: #444; 
+            text-align: justify; 
+            line-height: 1.8;
+        }
+
+        .article-section ul {
+            margin-right: 30px;
+            margin-top: 10px;
+            list-style: none;
+        }
+
+        .article-section ul li {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .article-section ul li::before {
+            content: "←";
+            color: var(--gold);
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .nav-footer { text-align: center; padding-bottom: 60px; }
+        
+        .btn-back {
+            padding: 18px 70px;
+            background: var(--deep-brown);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 60px;
+            border: 3px solid var(--gold);
+            font-weight: 900;
+            font-size: 1.3rem;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-back:hover { 
+            background: var(--gold); 
+            color: var(--deep-brown); 
+        }
+
+    </style>
+</head>
+<body onload="startDigitalLesson()">
+
+    <header>
+        <h1>المهارات الرقمية للمكفوفين</h1>
+    </header>
+
+    <div class="container">
+        <div class="skills-grid">
+            <div class="skill-card" onmouseenter="speak('قارئات الشاشة، المحرك الصوتي الذي يحول النصوص إلى كلام مسموع ويشرح هيكلية المواقع')">
+                <span class="icon-box">🔊</span>
+                <h3>قارئات الشاشة</h3>
+                <p>تعلم استخدام برامج NVDA و VoiceOver التي تعمل كجسر صوتي بينك وبين التكنولوجيا.</p>
+            </div>
+
+            <div class="skill-card" onmouseenter="speak('فلسفة الاختصارات، فن التحكم الكامل في الحاسوب عبر لوحة المفاتيح دون الحاجة للماوس')">
+                <span class="icon-box">⌨️</span>
+                <h3>إتقان الاختصارات</h3>
+                <p>استخدام مفاتيح Tab و Enter والأسهم للتنقل السريع والاحترافي داخل الأنظمة.</p>
+            </div>
+
+            <div class="skill-card" onmouseenter="speak('التصفح الميسر، مهارة القفز بين العناوين والروابط للوصول للمعلومة في ثوان معدودة')">
+                <span class="icon-box">🌐</span>
+                <h3>التصفح الذكي</h3>
+                <p>فهم بنية صفحات الويب والوصول للمحتوى التعليمي والخدمي بكل سهولة.</p>
+            </div>
+
+            <div class="skill-card" onmouseenter="speak('الذكاء الاصطناعي البصري، تطبيقات حديثة تحول الكاميرا إلى عين بديلة تصف المشاهد والوجوه')">
+                <span class="icon-box">🤖</span>
+                <h3>الرؤية الحاسوبية</h3>
+                <p>استخدام تطبيقات مثل Seeing AI لوصف الصور، قراءة المستندات، والتعرف على العملات.</p>
+            </div>
+        </div>
+
+        <article class="detailed-article">
+            <h2>الدليل الشامل للتمكين الرقمي (Accessibility Guide)</h2>
+            
+            <div class="article-section">
+                <h3>قارئات الشاشة: هندسة الصوت</h3>
+                <p>تعمل قارئات الشاشة (Screen Readers) كطبقة وسيطة بين نظام التشغيل والمستخدم. فهي لا تكتفي بنطق النص، بل تقدم "وصفاً دلالياً" (Semantic Description). فمثلاً، تخبر المستخدم أن هذا "عنوان رئيسي"، أو "جدول مكون من 3 أعمدة"، أو "حقل إدخال مطلوب". أشهر هذه البرامج هي NVDA للحاسوب، و TalkBack للأندرويد، و VoiceOver لأجهزة آبل.</p>
+            </div>
+
+            <div class="article-section">
+                <h3>التصفح بالهيكلية (Structural Navigation)</h3>
+                <p>المبصر يرى الصفحة ككتلة واحدة، لكن الكفيف يتصفحها كـ "هيكل منطقي". نحن نعلم المستخدمين كيفية القفز بين العناوين (Headings) باستخدام مفاتيح سريعة، أو التنقل بين الروابط فقط. هذه المهارة تجعل الكفيف يصل للمعلومة التي يريدها في ثوانٍ معدودة دون الحاجة لسماع الصفحة بالكامل من بدايتها، مما يوفر وقتاً وجهداً كبيراً.</p>
+            </div>
+
+            <div class="article-section">
+                <h3>الثورة البصرية والذكاء الاصطناعي</h3>
+                <p>بفضل تقنيات الرؤية الحاسوبية (Computer Vision)، أصبح بإمكان الكفيف "رؤية" ما لا يراه بعينيه. تطبيقات الذكاء الاصطناعي الحديثة تقدم خدمات مذهلة مثل:</p>
+                <ul>
+                    <li>وصف المشاهد الحية (مثلاً: "شخص يبتسم ويحمل كتاباً في غرفة مشمسة").</li>
+                    <li>التعرف الفوري على العملات النقدية الورقية بمختلف أنواعها.</li>
+                    <li>قراءة النصوص المكتوبة بخط اليد بدقة عالية جداً.</li>
+                    <li>التعرف على وجوه الأصدقاء المخزنين في الذاكرة وإخبار المستخدم بحضورهم.</li>
+                </ul>
+            </div>
+
+            <div class="article-section">
+                <h3>التمكين الوظيفي والدمج الرقمي</h3>
+                <p>المهارات الرقمية ليست مجرد تعلم استخدام جهاز، بل هي مفتاح لسوق العمل. الكفيف الآن يعمل كمبرمج، كاتب محتوى، محلل بيانات، ومدير خدمة عملاء. بفضل الأدوات التي تدعم "إمكانية الوصول"، أصبح العمل التشاركي بين المبصر والكفيف يتم في نفس اللحظة وعلى نفس المستندات الرقمية دون أي عوائق تقنية، مما يحقق مبدأ تكافؤ الفرص.</p>
+            </div>
+        </article>
+    </div>
+
+    <div class="nav-footer">
+        <a href="lessons.html" class="btn-back" onmouseenter="speak('العودة لقسم الدروس')">العودة لقسم الدروس</a>
+    </div>
+
+    <script>
+        function speak(text, callback) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-EG';
+            utterance.rate = 0.9;
+            if (callback) utterance.onend = callback;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function startDigitalLesson() {
+            // ترحيب وشرح تفصيلي صوتي يبدأ عند فتح الصفحة
+            speak("أهلاً بك يا بطل في دليل التمكين الرقمي. نحن الآن في درس المهارات الرقمية.", function() {
+                const script = `
+                    في هذا الدرس، ننتقل من مجرد المعرفة إلى الاحتراف. ستكتشف أن التكنولوجيا هي عينك الثالثة.
+                    عالمك الرقمي يبدأ من ثلاث ركائز:
+                    أولاً: قارئ الشاشة. هو ليس مجرد ناطق، بل هو دليلك الذي يشرح لك تخطيط الصفحة ويخبرك بمكان الأزرار والروابط بدقة.
+                    ثانياً: التفاعل غير البصري. ستتعلم أن لوحة المفاتيح هي الخريطة؛ فزر تاب ينقلك بين العناصر، وزر المسافة يختارها، وأزرار الأسهم تقرأ لك السطور كلمة بكلمة.
+                    ثالثاً: الذكاء الاصطناعي البصري. تطبيقات الكاميرا الآن هي عينك التي لا تنام، تصف لك الأشخاص، الألوان، وحتى الرسائل المكتوبة بخط اليد.
+                    تحرك الآن بين البطاقات لاستكشاف تفاصيل كل أداة.
+                `;
+                setTimeout(() => { speak(script); }, 800);
+            });
+        }
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاستقلال الذاتي | أكاديمية بَصيرة</title>
+    <style>
+        :root {
+            --deep-brown: #2D1E17;
+            --gold: #D4A373;
+            --beige: #F5EFE6;
+            --white: #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--beige); color: var(--deep-brown); min-height: 100vh; line-height: 1.8; }
+
+        header {
+            background: linear-gradient(to bottom, var(--deep-brown), #4A3428);
+            padding: 35px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+        }
+        header h1 { color: var(--gold); font-size: 2.6rem; font-weight: 900; }
+
+        .container { max-width: 1300px; margin: 40px auto; padding: 0 20px; }
+
+        /* الأيقونات الأربعة في صف واحد */
+        .mobility-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .mobility-card {
+            background: var(--white);
+            border-radius: 35px;
+            padding: 40px 15px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 3px solid transparent;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .mobility-card:hover { border-color: var(--gold); background: var(--deep-brown); transform: translateY(-10px); }
+        .mobility-card:hover h3, .mobility-card:hover p { color: var(--gold); }
+
+        .icon-box { font-size: 4.5rem; margin-bottom: 20px; display: block; }
+        .mobility-card h3 { color: var(--deep-brown); font-size: 1.5rem; margin-bottom: 15px; font-weight: 800; }
+        .mobility-card p { font-size: 1rem; color: #666; transition: 0.4s; }
+
+        /* قسم الشرح النصي */
+        .detailed-article {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            border-right: 12px solid var(--gold);
+            margin-bottom: 50px;
+        }
+
+        .detailed-article h2 { color: var(--deep-brown); font-size: 2.3rem; margin-bottom: 40px; text-align: center; border-bottom: 3px solid var(--beige); padding-bottom: 20px; }
+        
+        .article-section { margin-bottom: 45px; }
+        .article-section h3 { color: var(--gold); font-size: 1.7rem; margin-bottom: 15px; display: flex; align-items: center; }
+        .article-section h3::before { content: "🏠"; margin-left: 15px; }
+        
+        .article-section p { font-size: 1.25rem; color: #444; text-align: justify; line-height: 2; }
+
+        .article-section ul { margin-right: 40px; margin-top: 15px; list-style: none; }
+        .article-section ul li { font-size: 1.15rem; color: #555; margin-bottom: 15px; position: relative; }
+        .article-section ul li::before { content: "✨"; color: var(--gold); margin-left: 12px; font-weight: bold; }
+
+        .nav-footer { text-align: center; padding-bottom: 60px; }
+        .btn-back {
+            padding: 18px 70px;
+            background: var(--deep-brown);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 60px;
+            border: 3px solid var(--gold);
+            font-weight: 900;
+            font-size: 1.3rem;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .btn-back:hover { background: var(--gold); color: var(--deep-brown); }
+    </style>
+</head>
+<body onload="startSelfRelianceLesson()">
+
+    <header>
+        <h1>مهارات الاستقلال الذاتي</h1>
+    </header>
+
+    <div class="container">
+        <!-- الأيقونات الأربعة جمب بعض -->
+        <div class="mobility-grid">
+            <div class="mobility-card" onmouseenter="speak('تنظيم المنزل والأثاث بطريقة آمنة')">
+                <span class="icon-box">🛋️</span>
+                <h3>تنظيم البيئة</h3>
+                <p>ترتيب الأثاث وتأمين الزوايا لسهولة الحركة.</p>
+            </div>
+            <div class="mobility-card" onmouseenter="speak('إدارة المطبخ والطهي بأمان')">
+                <span class="icon-box">🍳</span>
+                <h3>فن الطهي</h3>
+                <p>استخدام أدوات القياس والطهي بطريقة احترافية.</p>
+            </div>
+            <div class="mobility-card" onmouseenter="speak('العناية الشخصية واختيار الملابس')">
+                <span class="icon-box">👕</span>
+                <h3>العناية بالذات</h3>
+                <p>تنسيق الملابس والتعرف على الألوان والعملات.</p>
+            </div>
+            <div class="mobility-card" onmouseenter="speak('استخدام الأجهزة المنزلية الذكية')">
+                <span class="icon-box">🏠</span>
+                <h3>المنزل الذكي</h3>
+                <p>التحكم في الأجهزة عبر الأوامر الصوتية.</p>
+            </div>
+        </div>
+
+        <article class="detailed-article">
+            <h2>دليل الحياة اليومية المستقلة</h2>
+            
+            <div class="article-section">
+                <h3>أولاً: استراتيجيات تنظيم المنزل</h3>
+                <p>الاستقلال يبدأ من بيئة منظمة؛ حيث نعتمد مبدأ "مكان لكل شيء، وكل شيء في مكانه". يتعلم الكفيف كيفية تمييز العلب المتشابهة باستخدام علامات بارزة أو ملصقات ناطقة، وتأمين الممرات لضمان حركة انسيابية دون خوف من العوائق المفاجئة.</p>
+            </div>
+
+            <div class="article-section">
+                <h3>ثانياً: المطبخ الآمن والطهي</h3>
+                <p>الطهي مهارة ممتعة عند تعلم تقنياتها الصحيحة، مثل:</p>
+                <ul>
+                    <li>استخدام "مؤقتات زمنية" ناطقة لضبط الوقت بدقة.</li>
+                    <li>تقنيات التقطيع الآمنة باستخدام الأصابع كدليل للشفرة.</li>
+                    <li>تمييز درجات الحرارة في الفرن والموقد باستخدام علامات ملموسة.</li>
+                </ul>
+            </div>
+
+            <div class="article-section">
+                <h3>ثالثاً: الأناقة وتنسيق الملابس</h3>
+                <p>يمكن للكفيف أن يكون في كامل أناقته من خلال تقنيات بسيطة، مثل وضع ملصقات صغيرة (QR codes) على ياقة القميص تخبره عبر الهاتف بلونه ونوع القماش، أو استخدام تطبيقات التعرف على الألوان لتنسيق ألوان ملابسه بلمسة زر واحدة.</p>
+            </div>
+
+            <div class="article-section">
+                <h3>رابعاً: إدارة الأموال والعملات</h3>
+                <p>يتعلم الكفيف طرقاً مبتكرة لطي العملات الورقية بأشكال مختلفة لتمييز قيمتها (مثل طي فئة العشرة جنيهات طولياً والخمسين جنيهات عرضياً)، أو استخدام تطبيقات الذكاء الاصطناعي التي تنطق قيمة العملة فور وضعها أمام الكاميرا.</p>
+            </div>
+        </article>
+    </div>
+
+    <div class="nav-footer">
+        <a href="lessons.html" class="btn-back" onmouseenter="speak('العودة لقسم الدروس')">العودة لقسم الدروس</a>
+    </div>
+
+    <script>
+        function speak(text, callback) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-EG';
+            utterance.rate = 0.9;
+            if (callback) utterance.onend = callback;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function startSelfRelianceLesson() {
+            speak("مرحباً بك في درس الاستقلال الذاتي. اليوم ستتعلم كيف تدير حياتك اليومية داخل المنزل بكل ثقة.", function() {
+                const script = `
+                    الاستقلال الذاتي يعني الاعتماد الكامل على النفس. في هذا الدرس سنتناول:
+                    أولاً: تنظيم بيئتك المحيطة لتسهيل الحركة والوصول لكل أدواتك.
+                    ثانياً: مهارات الطهي الآمن والتعامل مع أدوات المطبخ باحترافية.
+                    ثالثاً: العناية الشخصية وتنسيق مظهرك باستخدام التكنولوجيا المساعدة.
+                    رابعاً: إدارة شؤونك المالية والتعرف على العملات والأجهزة الذكية.
+                    استكشف البطاقات الأربعة أمامك لتبدأ رحلة الاعتماد على الذات.
+                `;
+                setTimeout(() => { speak(script); }, 800);
+            });
+        }
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نور النجاح | بَصيرة</title>
+    <style>
+        :root {
+            --deep-brown: #2D1E17;
+            --gold: #D4A373;
+            --white: #FFFFFF;
+            --soft-gold: rgba(212, 163, 115, 0.2);
+            --card-bg: rgba(255, 255, 255, 0.04);
+        }
+
+        .high-contrast {
+            --deep-brown: #000000 !important;
+            --gold: #FFFF00 !important;
+            --white: #FFFFFF !important;
+            --card-bg: #111111 !important;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; transition: 0.3s; }
+        
+        body { 
+            background: radial-gradient(circle at center, #3d2b21, var(--deep-brown)); 
+            color: var(--white); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .smart-toolbar {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: center; gap: 15px;
+            border-bottom: 1px solid var(--soft-gold);
+        }
+
+        .tool-btn {
+            background: var(--soft-gold); color: var(--gold); border: 1px solid var(--gold);
+            padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold;
+        }
+
+        #light-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        header { padding: 60px 20px; text-align: center; z-index: 1; }
+        header h1 { color: var(--gold); font-size: 5.5rem; filter: drop-shadow(0 0 15px rgba(212, 163, 115, 0.5)); }
+
+        .main-content { width: 90%; max-width: 1400px; margin: 0 auto; z-index: 1; position: relative; }
+
+        .premium-card {
+            background: var(--card-bg); backdrop-filter: blur(25px); border-radius: 60px;
+            padding: 80px; border: 1px solid rgba(212, 163, 115, 0.2);
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+        }
+
+        .info-section h2 { font-size: 4rem; color: var(--gold); margin-bottom: 30px; }
+        .info-section p { font-size: 1.9rem; line-height: 2; color: #ddd; }
+
+        .form-section { background: rgba(0, 0, 0, 0.4); padding: 60px; border-radius: 40px; border: 1px solid rgba(212, 163, 115, 0.1); }
+        .input-wrapper label { display: block; font-size: 1.6rem; margin-bottom: 15px; color: var(--gold); }
+        .input-wrapper input, .input-wrapper textarea {
+            width: 100%; padding: 25px; font-size: 1.4rem; margin-bottom: 30px;
+            border: 2px solid rgba(212, 163, 115, 0.2); border-radius: 20px;
+            background: rgba(255,255,255,0.03); color: white; outline: none;
+        }
+
+        .send-btn {
+            width: 100%; padding: 30px; background: linear-gradient(45deg, var(--gold), #f5e0c3);
+            color: var(--deep-brown); font-size: 2.2rem; font-weight: bold;
+            border: none; border-radius: 25px; cursor: pointer; transition: 0.5s;
+        }
+
+        .footer-nav { padding: 80px 20px; text-align: center; z-index: 1; }
+        .btn-back {
+            display: inline-flex; align-items: center; gap: 20px; color: var(--gold);
+            text-decoration: none; font-size: 1.8rem; font-weight: bold;
+            padding: 20px 60px; border: 3px solid var(--gold); border-radius: 50px;
+        }
+
+        #successModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: var(--deep-brown); padding: 60px; border-radius: 50px; text-align: center; border: 5px solid var(--gold); max-width: 800px; }
+        .modal-text { font-size: 2.3rem; margin: 30px 0; line-height: 1.8; color: #fff; }
+    </style>
+</head>
+<body>
+
+<nav class="smart-toolbar">
+    <button class="tool-btn" onclick="toggleLanguage()" id="langBtn">English 🌐</button>
+    <button class="tool-btn" onclick="toggleContrast()">تباين عالي 🌓</button>
+    <button class="tool-btn" onclick="readContent()">اقرأ الصفحة 🔊</button>
+</nav>
+
+<canvas id="light-particles"></canvas>
+
+<header>
+    <h1 id="mainTitle">نور النجاح</h1>
+    <p id="subTitle">بَصيرة.. حيث تلتقي الرؤية بالإبداع</p>
+</header>
+
+<div class="main-content">
+    <div class="premium-card">
+        <div class="info-section">
+            <div style="font-size: 9rem; margin-bottom: 20px;">💎</div>
+            <h2 id="infoTitle">همسة إبداعية</h2>
+            <p id="infoDesc">كل مبدع يترك أثراً، وأنتِ أثركِ يبدأ بكلمة. شاركينا رؤيتكِ الفنية، وطموحاتكِ التي تعانق السماء، أو شرارة فكرة تودين أن تبصر النور.</p>
+        </div>
+
+        <div class="form-section">
+            <form id="contactForm">
+                <div class="input-wrapper">
+                    <label id="lblLabel">اسم المبدعة</label>
+                    <input type="text" id="userName" placeholder="اكتبي اسمكِ المُلهم.." required>
+                </div>
+                <div class="input-wrapper">
+                    <label id="msgLabel">رؤيتكِ الفنية</label>
+                    <textarea id="userMsg" rows="4" placeholder="ماذا يملي عليكِ خيالكِ اليوم؟" required></textarea>
+                </div>
+                <button type="submit" class="send-btn" id="sendBtn">إشعال الضياء ✨</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-nav">
+    <a href="academy.html" class="btn-back" id="backBtn">
+        <span>🏠</span> العودة للمعرض
+    </a>
+</footer>
+
+<div id="successModal">
+    <div class="modal-content">
+        <div id="modalIcon" style="font-size: 10rem;">🎨</div>
+        <div class="modal-text" id="cheerText"></div>
+        <button class="send-btn" onclick="closeModal()" style="width: auto; padding: 20px 80px;">متابعة الإبداع</button>
+    </div>
+</div>
+
+<script>
+    let currentLang = 'ar';
+
+    const cheers = {
+        ar: [
+            "جمال فكركِ يسبق كلماتكِ، نحن بانتظار رؤية إبداعك القادم!",
+            "شكراً لأنكِ وضعتِ جزءاً من ضياءكِ هنا.. طريق التميز يليق بكِ.",
+            "رسالتكِ ليست مجرد نص، بل هي إلهام جديد يضاف لعالم بَصيرة.",
+            "المبدعون يغيرون العالم بتفاصيلهم الصغيرة.. شكراً لمشاركتنا تفاصيلكِ.",
+            "تم استلام شعاع إبداعكِ بنجاح.. استمري في التألق يا فنانة."
+        ],
+        en: [
+            "The beauty of your thought precedes your words; we await your next creation!",
+            "Thank you for leaving a part of your light here.. excellence suits you.",
+            "Your message is not just text, but a new inspiration for Baseera.",
+            "Creators change the world with their details.. thank you for sharing yours.",
+            "Your ray of creativity has been received.. keep shining, Artist."
+        ]
+    };
+
+    function toggleLanguage() {
+        currentLang = currentLang === 'ar' ? 'en' : 'ar';
+        const trans = {
+            en: { title: "Success Light", sub: "Baseera.. Where Vision Meets Creation", infoT: "A Creative Whisper", infoD: "Every creator leaves a mark, and yours starts with a word. Share your artistic vision and your sky-high ambitions.", lbl: "Creative Name", msg: "Your Vision", send: "Ignite the Light ✨", back: "Return to Gallery", lang: "العربية 🌐" },
+            ar: { title: "نور النجاح", sub: "بَصيرة.. حيث تلتقي الرؤية بالإبداع", infoT: "همسة إبداعية", infoD: "كل مبدع يترك أثراً، وأنتِ أثركِ يبدأ بكلمة. شاركينا رؤيتكِ الفنية، وطموحاتكِ التي تعانق السماء.", lbl: "اسم المبدعة", msg: "رؤيتكِ الفنية", send: "إشعال الضياء ✨", back: "العودة للمعرض", lang: "English 🌐" }
+        };
+        const s = trans[currentLang];
+        document.getElementById('mainTitle').innerText = s.title;
+        document.getElementById('subTitle').innerText = s.sub;
+        document.getElementById('infoTitle').innerText = s.infoT;
+        document.getElementById('infoDesc').innerText = s.infoD;
+        document.getElementById('lblLabel').innerText = s.lbl;
+        document.getElementById('msgLabel').innerText = s.msg;
+        document.getElementById('sendBtn').innerText = s.send;
+        document.getElementById('backBtn').innerHTML = `<span>🏠</span> ${s.back}`;
+        document.getElementById('langBtn').innerText = s.lang;
+        document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    }
+
+    function readContent() {
+        const text = document.getElementById('infoDesc').innerText;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    document.getElementById('contactForm').onsubmit = (e) => {
+        e.preventDefault();
+        const name = document.getElementById('userName').value;
+        const randomMsg = cheers[currentLang][Math.floor(Math.random() * cheers[currentLang].length)];
+        document.getElementById('cheerText').innerText = `المبدعة ${name}.. ${randomMsg}`;
+        document.getElementById('successModal').style.display = 'flex';
+        e.target.reset();
+    };
+
+    function toggleContrast() { document.body.classList.toggle('high-contrast'); }
+    function closeModal() { document.getElementById('successModal').style.display = 'none'; }
+
+    // Particle background logic
+    const canvas = document.getElementById('light-particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = Math.random() * 0.5 - 0.25;
+            this.speedY = Math.random() * 0.5 - 0.25;
+            this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+            this.x += this.speedX; this.y += this.speedY;
+            if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+            if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+        }
+        draw() { ctx.fillStyle = `rgba(212, 163, 115, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+    }
+    for (let i = 0; i < 80; i++) particles.push(new Particle());
+    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+    animate();
+</script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        const style = document.createElement('style');
+        let cssRules = "";
+
+        if (savedMode === 'high-vis') {
+            cssRules = `
+                body { background-color: #000 !important; color: #ff0 !important; }
+                div, section, form, input, textarea, button { 
+                    background-color: #000 !important; 
+                    color: #ff0 !important; 
+                    border: 2px solid #ff0 !important; 
+                }
+                h1, h2, h3, p, span, label { color: #ff0 !important; }
+                ::placeholder { color: #ff0 !important; opacity: 0.7; }
+            `;
+        } 
+        else if (savedMode === 'dark') {
+            cssRules = `
+                body { background-color: #1a1a1a !important; color: #fff !important; }
+                div, section, form, input, textarea, button { 
+                    background-color: #333 !important; 
+                    color: #fff !important; 
+                    border: 1px solid #555 !important;
+                }
+                h1, h2, h3, p, span, label { color: #fff !important; }
+            `;
+        }
+        else if (savedMode === 'soft-blue') {
+            cssRules = `
+                body { background-color: #e3f2fd !important; color: #0d47a1 !important; }
+                div, section, form, input, textarea, button { 
+                    background-color: #bbdefb !important; 
+                    color: #0d47a1 !important; 
+                    border: 1px solid #90caf9 !important; 
+                }
+                h1, h2, h3, p, span, label { color: #0d47a1 !important; }
+                ::placeholder { color: #0d47a1 !important; opacity: 0.6; }
+            `;
+        }
+
+        if (cssRules !== "") {
+            style.innerHTML = cssRules;
+            document.head.appendChild(style);
+        }
+    });
+</script>
+</body>
+</html>

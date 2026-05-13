@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بَصيرة | المكتبة المسموعة</title>
+    <style>
+        :root {
+            --bg-creamy: #F3EDE4;      /* لونك البيج المفضل */
+            --coffee-main: #6F4E37;    /* البني القهوة للمربع */
+            --dark-espresso: #2D1E17;  /* البني الغامق للأزرار */
+            --gold-accent: #C69774;    /* الذهبي للتحديد */
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-creamy);
+            margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            transition: 0.4s;
+        }
+
+        header h1 { color: var(--dark-espresso); margin: 20px 0; font-size: 2.5rem; font-weight: 900; }
+
+        .controls-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px; width: 95%; max-width: 1100px; margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background-color: var(--dark-espresso); color: var(--white);
+            border: 2px solid var(--gold-accent); padding: 15px 5px; border-radius: 20px;
+            font-weight: bold; cursor: pointer; display: flex;
+            flex-direction: column; align-items: center; gap: 8px; transition: 0.3s;
+            font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .action-btn:hover { background-color: var(--gold-accent); transform: translateY(-5px); }
+
+        .editor-wrapper {
+            width: 90%; max-width: 900px; background-color: var(--coffee-main);
+            border-radius: 50px 50px 20px 20px; padding: 30px;
+            box-shadow: 0 20px 50px rgba(45, 30, 23, 0.3); border: 4px solid var(--gold-accent);
+        }
+
+        #userText {
+            width: 100%; min-height: 350px; background: transparent; border: none;
+            outline: none; color: var(--white); font-size: 1.8rem;
+            line-height: 1.7; text-align: right; resize: none;
+        }
+
+        .nav-btn {
+            text-decoration: none; color: var(--dark-espresso); font-weight: bold;
+            padding: 12px 40px; border: 2px solid var(--dark-espresso);
+            border-radius: 50px; margin: 30px 0; transition: 0.3s;
+        }
+        .nav-btn:hover { background-color: var(--dark-espresso); color: var(--white); }
+    </style>
+</head>
+<body onload="initPage()">
+
+    <header><h1>بَصيرة | المكتبة المسموعة</h1></header>
+
+    <div class="controls-grid">
+        <button class="action-btn" onclick="toggleDictation()" id="micBtn" onmouseenter="speakUI('بدء الإملاء الصوتي')"><span>🎤</span>إملاء</button>
+        <button class="action-btn" onclick="readFullText()" onmouseenter="speakUI('نطق النص كاملاً')"><span>🔊</span>نطق الكل</button>
+        <button class="action-btn" onclick="tellTime()" onmouseenter="speakUI('معرفة الوقت والتاريخ')"><span>⏰</span>الوقت</button>
+        <button class="action-btn" onclick="textStats()" onmouseenter="speakUI('إحصائيات النص')"><span>📊</span>الإحصائيات</button>
+        <button class="action-btn" onclick="toggleNightMode()" onmouseenter="speakUI('تبديل الوضع الليلي')"><span>🌙</span>ليل/نهار</button>
+        <button class="action-btn" onclick="saveAsFile()" onmouseenter="speakUI('حفظ النص كملف')"><span>💾</span>حفظ</button>
+        <button class="action-btn" onclick="shareText()" onmouseenter="speakUI('مشاركة النص')"><span>📤</span>مشاركة</button>
+        <button class="action-btn" onclick="clearAll()" onmouseenter="speakUI('مسح كل شيء')"><span>🗑️</span>مسح</button>
+    </div>
+
+    <div class="editor-wrapper">
+        <textarea id="userText" placeholder="المكتبة المسموعة ترحب بك.. ابدأ الكتابة أو الإملاء الآن"></textarea>
+    </div>
+
+    <a href="home.html" class="nav-btn" onmouseenter="speakUI('العودة للرئيسية')">العودة للرئيسية</a>
+
+    <script>
+        const speech = window.speechSynthesis;
+
+        function speakUI(info) {
+            speech.cancel();
+            const msg = new SpeechSynthesisUtterance(info);
+            msg.lang = 'ar-SA';
+            speech.speak(msg);
+        }
+
+        function initPage() {
+            // شرح كامل للصفحة عند الدخول
+            const welcomeMsg = `
+                مرحباً بك في المكتبة المسموعة من بصيرة. 
+                هذه الصفحة تتيح لك الكتابة عن طريق الصوت أو لوحة المفاتيح. 
+                توجد في الأعلى ثمانية أزرار: 
+                زر الإملاء لبدء الكلام، زر نطق الكل لسماع ما كتبت، 
+                زر الوقت، وزر الإحصائيات، والوضع الليلي، 
+                بالإضافة لأزرار الحفظ والمشاركة والمسح. 
+                يمكنك التحرك بين الأزرار وسأقوم بشرح وظيفة كل زر عند الوقوف عليه.
+            `;
+            setTimeout(() => speakUI(welcomeMsg), 500);
+        }
+
+        function tellTime() {
+            const now = new Date();
+            speakUI(`الساعة الآن هي ${now.toLocaleTimeString('ar-EG')} وتاريخ اليوم هو ${now.toLocaleDateString('ar-EG')}`);
+        }
+
+        function textStats() {
+            const text = document.getElementById('userText').value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            speakUI(`يحتوي النص على ${words} كلمة و ${text.length} حرفاً.`);
+        }
+
+        function toggleNightMode() {
+            document.body.style.backgroundColor = document.body.style.backgroundColor === 'rgb(26, 26, 26)' ? '#F3EDE4' : '#1A1A1A';
+            speakUI("تم تغيير وضع الرؤية");
+        }
+
+        function saveAsFile() {
+            const text = document.getElementById('userText').value;
+            if(!text) { speakUI("المربع فارغ"); return; }
+            const blob = new Blob([text], { type: "text/plain" });
+            const anchor = document.createElement("a");
+            anchor.download = "basira_library.txt";
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.click();
+            speakUI("تم تحميل الملف بنجاح");
+        }
+
+        function shareText() {
+            const text = document.getElementById('userText').value;
+            if (navigator.share && text) {
+                navigator.share({ title: 'من المكتبة المسموعة', text: text });
+            } else { speakUI("المشاركة غير متاحة"); }
+        }
+
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'ar-SA';
+        recognition.continuous = true;
+
+        function toggleDictation() {
+            const btn = document.getElementById('micBtn');
+            if (btn.style.backgroundColor === 'red') {
+                recognition.stop();
+                btn.style.backgroundColor = '';
+                speakUI("تم حفظ الإملاء");
+            } else {
+                recognition.start();
+                btn.style.backgroundColor = 'red';
+                speakUI("أنا أسمعك، تفضل بالتحدث");
+            }
+        }
+
+        recognition.onresult = (event) => {
+            document.getElementById('userText').value += event.results[event.results.length - 1][0].transcript + " ";
+        };
+
+        function readFullText() {
+            speakUI(document.getElementById('userText').value || "المربع فارغ");
+        }
+
+        function clearAll() {
+            document.getElementById('userText').value = "";
+            speakUI("تم المسح");
+        }
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

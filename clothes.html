@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بَصيرة | النسخة النهائية الاحترافية</title>
+    <!-- استخدام خطوط النظام لضمان العمل بدون إنترنت بنفس الجودة -->
+    <style>
+        :root { 
+            --mocha: #2D1E17; 
+            --cream: #F3EDE4; 
+            --gold: #C69774; 
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+
+        body { 
+            background-color: var(--cream); 
+            color: var(--mocha); 
+            text-align: center; 
+            padding: 20px; 
+            line-height: 1.6;
+        }
+
+        .cam-frame {
+            width: 320px; 
+            height: 320px; 
+            margin: 20px auto;
+            border: 10px solid var(--mocha); 
+            border-radius: 50%;
+            overflow: hidden; 
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            /* فلتر خفي لتحسين تشبع الألوان قبل الفحص */
+            filter: saturate(1.2); 
+        }
+
+        .focus-ring {
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 60px; 
+            height: 60px; 
+            border: 4px dashed var(--gold); 
+            border-radius: 50%;
+            background: rgba(198, 151, 116, 0.1);
+        }
+
+        .main-btn {
+            background: var(--mocha); 
+            color: var(--cream); 
+            border: none;
+            width: 100%; 
+            max-width: 320px; 
+            padding: 22px; 
+            border-radius: 50px;
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            cursor: pointer; 
+            display: block; 
+            margin: 10px auto;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .main-btn:active { transform: scale(0.95); }
+
+        .back-btn {
+            background: transparent; 
+            color: var(--mocha); 
+            border: 2px solid var(--mocha);
+            width: 100%; 
+            max-width: 320px; 
+            padding: 15px; 
+            border-radius: 50px;
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: block; 
+            margin: 15px auto;
+            text-decoration: none; 
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { background: var(--mocha); color: var(--cream); }
+
+        .res-box {
+            margin-top: 25px; 
+            padding: 25px; 
+            background: white; 
+            border-radius: 30px;
+            display: none; 
+            width: 100%; 
+            max-width: 350px; 
+            margin-inline: auto;
+            border-bottom: 10px solid var(--gold);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        #dot {
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            margin: 0 auto 15px; 
+            border: 5px solid var(--cream);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body onload="start()">
+
+    <h1 style="font-weight: 900; margin-bottom: 5px;">نظام بَصيرة المطور</h1>
+    <p style="font-weight: 600; opacity: 0.7;">تحديد الألوان وتنسيق المظهر ذكياً</p>
+
+    <div class="cam-frame">
+        <video id="video" autoplay playsinline></video>
+        <div class="focus-ring"></div>
+    </div>
+
+    <!-- الأزرار الرئيسية -->
+    <button class="main-btn" onclick="scan()">فحص اللون الآن</button>
+    <a href="home.html" class="back-btn">العودة للرئيسية</a>
+
+    <!-- لوحة النتائج -->
+    <div id="out" class="res-box">
+        <div id="dot"></div>
+        <h2 id="name" style="font-size: 2.2rem; margin-bottom: 10px;"></h2>
+        <p id="tip" style="font-size: 1.1rem; font-weight: 700; color: #555;"></p>
+    </div>
+
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <script>
+        let video = document.getElementById('video');
+
+        async function start() {
+            try {
+                const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                video.srcObject = s;
+            } catch (err) {
+                alert("يرجى السماح بالوصول للكاميرا ليعمل النظام.");
+            }
+        }
+
+        // تحويل الألوان لنظام HSV لضمان الدقة وتجاهل لمعان الضوء
+        function rgbToHsv(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            let max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, v = max;
+            let d = max - min;
+            s = max === 0 ? 0 : d / max;
+            if (max === min) { h = 0; }
+            else {
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return [h * 360, s * 100, v * 100];
+        }
+
+        function scan() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = video.videoWidth; 
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
+
+            // قراءة عينة مساحية لتقليل أثر التشويش
+            const d = ctx.getImageData(canvas.width/2-15, canvas.height/2-15, 30, 30).data;
+            let r=0, g=0, b=0;
+            for(let i=0; i<d.length; i+=4) { r+=d[i]; g+=d[i+1]; b+=d[i+2]; }
+            let count = d.length/4;
+            let hsv = rgbToHsv(r/count, g/count, b/count);
+            let h = hsv[0], s = hsv[1], v = hsv[2];
+
+            let res = { n: "لون غير واضح", t: "حاولي توجيه الحساس بعيداً عن الضوء المباشر." };
+
+            // قاعدة بيانات الألوان مع التنسيقات المتنوعة (Styling Rules)
+            if (v < 20) {
+                res = { n: "أسود داكن", t: "جربي تنسيقه مع الأحمر الفاقع أو الزمردي لإطلالة فخمة." };
+            } 
+            else if (s < 15 && v > 20) {
+                res = { n: "رمادي محايد", t: "يليق جداً مع الأصفر الخردلي أو الوردي الهادئ." };
+            }
+            else if (h > 300 && h < 350) {
+                res = { n: "فوشيا (وردي غامق)", t: "تنسيق عصري مع الأخضر النعناعي أو البرتقالي الهادئ." };
+            }
+            else if ((h >= 0 && h < 20) || h > 350) {
+                res = { n: "أحمر", t: "يعطي مظهراً رائعاً مع الأزرق الكحلي أو الزيتي الداكن." };
+            }
+            else if (h >= 20 && h < 45) {
+                res = { n: "برتقالي", t: "يتماشى بجرأة مع البنفسجي الغامق أو الفيروزي." };
+            }
+            else if (h >= 45 && h < 70) {
+                res = { n: "أصفر", t: "جربي تنسيقه مع البنفسجي الفاتح (اللافندر) لإطلالة مبهجة." };
+            }
+            else if (h >= 70 && h < 160) {
+                res = { n: "أخضر", t: "يتناسق بشكل طبيعي مع درجات البني الخشبي أو الطوبي." };
+            }
+            else if (h >= 160 && h < 250) {
+                res = { n: "أزرق", t: "يليق جداً مع البرتقالي المحروق أو الأصفر الذهبي." };
+            }
+            else if (h >= 250 && h < 300) {
+                res = { n: "بنفسجي", t: "تنسيق مثالي مع الأخضر الليموني أو درجات الكريمي الهادئة." };
+            }
+
+            // عرض النتائج ونطقها
+            document.getElementById('out').style.display = 'block';
+            document.getElementById('dot').style.backgroundColor = `rgb(${r/count},${g/count},${b/count})`;
+            document.getElementById('name').innerText = res.n;
+            document.getElementById('tip').innerText = "نصيحة التنسيق: " + res.t;
+            
+            // خاصية النطق الصوتي (تعمل بدون إنترنت)
+            const msg = new SpeechSynthesisUtterance("اللون هو " + res.n + ". " + res.t);
+            msg.lang = 'ar-EG'; 
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

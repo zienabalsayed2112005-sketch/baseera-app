@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بَصيرة | فريق العمل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --card-bg: rgba(60, 43, 34, 0.85); /* خلفية الكارت شفافة قليلاً */
+            --beige-text: #F5EFE6;     
+            --accent-gold: #C69774;
+            --premium-cyan: #00FBFF; 
+            --premium-purple: #A29BFE;
+            --highlight-red: #FF4D4D;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+        /* خلفية متحركة بريميوم */
+        body { 
+            background: linear-gradient(-45deg, #D9CEBD, #3C2B22, #D9CEBD, #8B735B);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 40px 20px; 
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .back-home { 
+            align-self: flex-start; 
+            background: var(--card-bg); 
+            color: var(--beige-text); 
+            padding: 12px 28px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border: 1px solid var(--accent-gold); 
+            margin-bottom: 30px; 
+            backdrop-filter: blur(10px); /* تأثير الزجاج الضبابي */
+            transition: 0.3s;
+        }
+
+        .back-home:hover { background: var(--accent-gold); color: #3C2B22; }
+
+        .header-section { text-align: center; margin-bottom: 60px; }
+        h1 { color: #F5EFE6; font-size: 3.5rem; font-weight: 900; text-shadow: 2px 4px 10px rgba(0,0,0,0.3); }
+        .subtitle { font-size: 1.4rem; color: var(--accent-gold); font-weight: bold; }
+
+        .team-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+            gap: 30px; width: 100%; max-width: 1200px; 
+        }
+
+        /* كروت بتأثير Glassmorphism */
+        .member-card { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(198, 151, 116, 0.3); 
+            padding: 40px 20px; 
+            border-radius: 35px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .member-card:hover { 
+            transform: translateY(-15px) scale(1.02); 
+            border-color: var(--accent-gold); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        .tech-graphic { 
+            width: 120px; height: 120px; margin-bottom: 25px; object-fit: contain; 
+            transition: 0.5s;
+        }
+
+        .member-card:hover .tech-graphic { transform: rotate(10deg) scale(1.1); }
+        
+        .glow-z { filter: drop-shadow(0 0 15px var(--premium-cyan)); }
+        .glow-n { filter: drop-shadow(0 0 15px var(--premium-purple)); }
+
+        h3 { color: var(--beige-text); font-size: 1.4rem; font-weight: 700; margin-top: 10px; }
+
+        /* إضافة لمسة ضوئية خلف الكروت */
+        .member-card::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 35px; background: radial-gradient(circle at center, var(--accent-gold) 0%, transparent 70%);
+            opacity: 0; transition: 0.5s; z-index: -1;
+        }
+        .member-card:hover::after { opacity: 0.15; }
+
+    </style>
+</head>
+<body>
+
+    <a href="home.html" class="back-home">🔙 العودة للرئيسية</a>
+
+    <div class="header-section">
+        <h1>مبدعات بَصيرة</h1>
+        <p class="subtitle">نحنُ بَصيرتك التي ترى بها الجمال</p>
+    </div>
+
+    <div class="team-grid">
+        <!-- 1. زينب السيد حامد -->
+        <div class="member-card" style="border-top: 4px solid var(--premium-cyan);" onclick="speak('أنا زينب السيد.. أهلاً بك يا صديقي، تذكر دائماً أن الجمال الحقيقي ليس ما تراه عيناك من ظواهر، بل هو ما تشعر به روحك وتلمسه بصيرتك في أعماق الأشياء.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/6840/6840478.png" class="tech-graphic glow-z" alt="Zienab">
+            <h3>زينب السيد حامد</h3>
+        </div>
+        
+        <!-- 2. ندى عمارة عبدالله -->
+        <div class="member-card" style="border-top: 4px solid var(--premium-purple);" onclick="speak('أهلاً بك يا صديقي، أنا ندى عمارة؛ جئتُ لأقول لك إن الإرادة هي القوة الوحيدة التي لا يمكن كسرها؛ فاجعل إرادتك نوراً يضيء لك الدروب المعتمة.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/9438/9438165.png" class="tech-graphic glow-n" alt="Nada">
+            <h3>ندى عمارة عبدالله</h3>
+        </div>
+
+        <!-- 3. منه الله مجدي -->
+        <div class="member-card" style="border-top: 4px solid var(--highlight-red);" onclick="speak('أهلاً بك يا صديقي؛ أنا منه الله مجدي؛ تذكر دائماً أن أصعب أنواع العجز ليس عجز الجسد، بل عجز الروح حين تفقد الأمل وتستسلم لليأس؛ نحن نؤمن بك.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" class="tech-graphic" alt="Menna">
+            <h3>منه الله مجدي</h3>
+        </div>
+
+        <!-- البقية بنفس الستايل البريميوم -->
+        <div class="member-card" onclick="speak('أهلاً بك يا صديقي؛ أنا تقى عبدالفتاح؛ بصيرتك هي سر تميزك وعطاؤك الفريد في هذا العالم؛ فأنصت لنبض قلبك وصوت عقلك، فهما دليلك الحقيقي.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2620/2620732.png" class="tech-graphic">
+            <h3>تقى عبدالفتاح</h3>
+        </div>
+
+        <div class="member-card" onclick="speak('أهلاً بك يا صديقي؛ أنا ملك خالد إبراهيم؛ قد لا ترى النور بعينيك، لكنك قادر على أن تكون نوراً يضيء حياة الآخرين بعلمك وأدبك؛ وثق أنك ولدت لتصنع فرقاً.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/4359/4359031.png" class="tech-graphic">
+            <h3>ملك خالد إبراهيم</h3>
+        </div>
+
+        <div class="member-card" onclick="speak('أهلاً بك يا صديقي؛ أنا حبيبة هيثم؛ كل خطوة تخطوها نحو أحلامك هي انتصار عظيم لإرادتك؛ استمر في السعي فنحن هنا لنكون عينك التي ترى الجمال.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2014/2014581.png" class="tech-graphic">
+            <h3>حبيبة هيثم</h3>
+        </div>
+
+        <div class="member-card" onclick="speak('أهلاً بك يا صديقي؛ أنا ملك مجدي؛ ثق بنفسك وبقدراتك اللامحدودة، فأنت تمتلك رؤية ثاقبة تتجاوز حدود البصر لتصل إلى جوهر الحقيقة.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/4861/4861753.png" class="tech-graphic">
+            <h3>ملك مجدي</h3>
+        </div>
+
+        <div class="member-card" onclick="speak('أهلاً بك يا صديقي؛ أنا جيهان إبراهيم؛ نحن هنا لنكون معك خطوة بخطوة، وقوتك وتحديك هما ما يلهمنا لنقدم دائماً أفضل ما لدينا في بصيرة.')">
+            <img src="https://cdn-icons-png.flaticon.com/512/10438/10438237.png" class="tech-graphic">
+            <h3>جيهان إبراهيم</h3>
+        </div>
+    </div>
+
+    <script>
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const speech = new SpeechSynthesisUtterance(text);
+                speech.lang = 'ar-SA';
+                speech.rate = 0.85; 
+                window.speechSynthesis.speak(speech);
+            }
+        }
+    </script>
+</body>
+</html>

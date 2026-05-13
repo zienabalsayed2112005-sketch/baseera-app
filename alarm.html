@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بصيرة | المنبه الصوتي المتكامل</title>
+    <style>
+        :root {
+            --mocha-bg: #4B3832;
+            --beige-accent: #F5F5DC;
+            --beige-text: #FEFBEA;
+        }
+
+        body {
+            background-color: var(--mocha-bg); color: var(--beige-accent);
+            font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center;
+            margin: 0; padding: 20px; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .live-clock { font-size: 4.5rem; font-weight: bold; margin: 20px 0; color: var(--beige-accent); }
+
+        .add-alarm-btn {
+            background-color: var(--beige-accent); color: var(--mocha-bg);
+            width: 100px; height: 100px; border-radius: 50%;
+            font-size: 60px; border: none; cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6); margin-bottom: 20px;
+        }
+
+        .audio-input-panel {
+            display: none; background: rgba(245, 245, 220, 0.1);
+            padding: 25px; border-radius: 25px; border: 2px solid var(--beige-accent);
+            width: 90%; max-width: 400px;
+        }
+
+        .voice-rec-btn {
+            background: #D4AF37; color: #4B3832;
+            border: none; padding: 20px; border-radius: 15px;
+            font-weight: bold; font-size: 1.4rem; cursor: pointer;
+            width: 100%; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .alarms-list { width: 100%; max-width: 400px; margin-top: 30px; }
+        .alarm-item {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--beige-accent);
+            padding: 15px; border-radius: 15px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+
+        /* تنسيق زر العودة الموحد والمتناسق مع الصفحة */
+        .back-link {
+            text-decoration: none; 
+            background-color: var(--beige-accent); 
+            color: var(--mocha-bg); 
+            padding: 12px 50px;
+            border-radius: 50px; 
+            margin-top: 40px; /* زيادة المسافة العلوية */
+            margin-bottom: 20px;
+            font-weight: 900;
+            display: inline-block;
+            border: 2px solid transparent;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .back-link:hover {
+            background-color: #D4AF37; /* لون ذهبي عند التمرير */
+            transform: scale(1.05);
+        }
+		
+    </style>
+</head>
+<body onclick="initBaseera()">
+
+    <h1>⏰ مُنبه بَصيرة</h1>
+    <div class="live-clock" id="currentClock">00:00:00</div>
+
+    <button class="add-alarm-btn" onclick="openPanel()" onmouseenter="speak('زر إضافة منبه جديد')">+</button>
+
+    <div id="alarmPanel" class="audio-input-panel">
+        <button class="voice-rec-btn" onclick="startVoiceInput()" onmouseenter="speak('اضغط هنا لضبط المنبه بصوتك')">
+            🎤 اضغط لتقول الوقت بصوتك
+        </button>
+        <p style="margin-top: 15px; font-size: 0.9rem;">(مثال: الساعة الخامسة مساءً)</p>
+    </div>
+
+    <div id="displayList" class="alarms-list"></div>
+
+    <!-- زر العودة المعدل -->
+    <a href="home.html" class="back-link" onmouseenter="speak('العودة للرئيسية')">العودة للرئيسية</a>
+
+    <audio id="alarmRingtone" loop>
+        <source src="https://www.soundjay.com/buttons/beep-01a.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let myAlarms = JSON.parse(localStorage.getItem('baseera_alarms')) || [];
+        const ringtone = document.getElementById('alarmRingtone');
+        let voiceStarted = false;
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'ar-SA';
+            window.speechSynthesis.speak(msg);
+        }
+
+        function initBaseera() {
+            if (!voiceStarted) {
+                const now = new Date();
+                let h = now.getHours();
+                let m = now.getMinutes();
+                let ampm = h >= 12 ? 'مساءً' : 'صباحاً';
+                h = h % 12;
+                h = h ? h : 12; 
+                speak("أهلاً بكِ في منبه بصيرة. الساعة الآن " + h + " و " + m + " دقيقة " + ampm + ". اضغطي على زر الزائد في منتصف الشاشة لإضافة منبه.");
+                voiceStarted = true;
+                showAlarms();
+            }
+        }
+
+        function openPanel() {
+            document.getElementById('alarmPanel').style.display = 'block';
+            speak("فتحت قائمة الضبط الصوتي. اضغطي على الزر الذهبي في منتصف الشاشة وقولي الوقت الذي ترغبين به.");
+        }
+
+        function startVoiceInput() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                speak("عذراً، متصفحك لا يدعم خاصية التعرف على الصوت.");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ar-SA';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            speak("أنا أسمعكِ الآن، قولي الوقت.");
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                processVoiceTime(transcript);
+            };
+
+            recognition.start();
+        }
+
+        function processVoiceTime(text) {
+            let hour = "00";
+            if (text.includes("واحدة")) hour = "01";
+            else if (text.includes("ثانية") || text.includes("اثنين")) hour = "02";
+            else if (text.includes("ثلاثة")) hour = "03";
+            else if (text.includes("اربعة")) hour = "04";
+            else if (text.includes("خمسة")) hour = "05";
+            else if (text.includes("ستة")) hour = "06";
+            else if (text.includes("سبعة")) hour = "07";
+            else if (text.includes("ثمانية")) hour = "08";
+            else if (text.includes("تسعة")) hour = "09";
+            else if (text.includes("عشرة")) hour = "10";
+            else if (text.includes("إحدى عشر")) hour = "11";
+            else if (text.includes("ثانية عشر")) hour = "12";
+            
+            let timeToSave = hour + ":00";
+            if ((text.includes("مساء") || text.includes("بليل")) && parseInt(hour) < 12) {
+                timeToSave = (parseInt(hour) + 12) + ":00";
+            } else if (text.includes("صباح") && hour === "12") {
+                timeToSave = "00:00";
+            }
+
+            myAlarms.push(timeToSave);
+            localStorage.setItem('baseera_alarms', JSON.stringify(myAlarms));
+            showAlarms();
+            document.getElementById('alarmPanel').style.display = 'none';
+            speak("لقد تم حفظ المنبه في الساعة " + text + ". سنقوم بتنبيهك بنغمة عالية في هذا الوقت.");
+        }
+
+        setInterval(() => {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            let seconds = String(now.getSeconds()).padStart(2, '0');
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            const currentTime24 = String(hours).padStart(2, '0') + ":" + minutes;
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; 
+            const displayTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
+            
+            document.getElementById('currentClock').innerText = displayTime;
+
+            if (myAlarms.includes(currentTime24) && now.getSeconds() === 0) {
+                ringtone.play();
+                speak("حان الآن موعد المنبه، اضغطي على زر الحذف لإيقاف النغمة.");
+            }
+        }, 1000);
+
+        function showAlarms() {
+            const list = document.getElementById('displayList');
+            list.innerHTML = '';
+            myAlarms.forEach((t, i) => {
+                list.innerHTML += `<div class="alarm-item">
+                    <span style="font-size:1.5rem; font-weight:bold;">🔔 ${t}</span>
+                    <button class="delete-btn" onclick="deleteAlarm(${i})" onmouseenter="speak('حذف منبه الساعة ${t}')">إيقاف وحذف</button>
+                </div>`;
+            });
+        }
+
+        function deleteAlarm(i) {
+            ringtone.pause();
+            ringtone.currentTime = 0;
+            myAlarms.splice(i, 1);
+            localStorage.setItem('baseera_alarms', JSON.stringify(myAlarms));
+            showAlarms();
+            speak("تم إيقاف النغمة وحذف المنبه.");
+        }
+		
+    </script>
+    <script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

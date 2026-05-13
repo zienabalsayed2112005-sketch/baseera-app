@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بَصيرة | الأفق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --m: #3D2B1F; --c: #F5EFE6; --g: #C69774; --w: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        
+        body { 
+            background: radial-gradient(circle at center, #F5EFE6 0%, #E8DFD2 100%);
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        .nav { padding: 25px; display: flex; align-items: center; }
+        .back-link {
+    background-color: #5D4037 !important; /* اللون البني الخاص بمشروعك */
+    color: #F5EFE6 !important; /* لون البيج الفاتح للنص */
+    padding: 15px 30px !important;
+    border-radius: 50px !important;
+    text-decoration: none !important;
+    font-weight: 900 !important;
+    font-size: 1.2rem !important;
+    display: inline-block !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 9999 !important;
+    transition: 0.3s all ease !important;
+}
+
+.back-link:hover {
+    background-color: #3E2723 !important;
+    transform: scale(1.05) !important;
+}
+
+        .main-content { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center;
+        }
+
+        .clock-wrapper {
+            cursor: pointer;
+            padding: 40px;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        .clock-wrapper:active { transform: scale(0.9); background: var(--g); }
+
+        .time { 
+            font-size: 6.5rem; font-weight: 900; color: var(--m); 
+            line-height: 1; margin-bottom: 5px;
+            text-shadow: 0 10px 20px rgba(61, 43, 31, 0.1);
+        }
+
+        .period { font-size: 1.6rem; color: var(--g); font-weight: 900; letter-spacing: 4px; }
+        .clock-wrapper:active .time, .clock-wrapper:active .period { color: var(--w); }
+
+        .bottom-section {
+            width: 100%; display: flex; flex-direction: column;
+            align-items: center; gap: 15px; padding-bottom: 40px;
+        }
+
+        .info-card {
+            background: var(--m); color: var(--c);
+            width: 85%; max-width: 380px; padding: 20px;
+            border-radius: 25px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            box-shadow: 0 10px 25px rgba(61, 43, 31, 0.2);
+            transition: 0.2s;
+        }
+        .info-card:active { background: var(--g); transform: translateY(3px); }
+
+        .msg-card { background: var(--g); color: var(--w); border: 2px solid var(--m); }
+
+    </style>
+</head>
+<body onload="initHorizon()">
+
+    <nav class="nav">
+<a href="home.html" class="back-link">العودة للرئيسية</a>    </nav>
+
+    <div class="main-content">
+        <div class="clock-wrapper" onclick="speakTime()" ontouchstart="speakTime()">
+            <div class="time" id="clock-display">00:00</div>
+            <div class="period" id="period-display">صباحاً</div>
+        </div>
+    </div>
+
+    <div class="bottom-section">
+        <div class="info-card" onclick="speakDate()">
+            <span style="font-size: 2rem;">📅</span>
+            <div style="text-align: right;">
+                <h3 id="day-name" style="font-size: 1.2rem;">...</h3>
+                <p id="full-date" style="opacity: 0.8; font-size: 0.9rem;">-- -- --</p>
+            </div>
+        </div>
+
+        <div class="info-card msg-card" onclick="speakRandomMessage()">
+            <span style="font-size: 2rem;">✨</span>
+            <p style="font-weight: 900;">رسالة بَصيرة لك (اضغط هنا)</p>
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+            "بصيرتُك في قلبك، والنور يملأ روحك.. يومك سعيد يا بطل.",
+            "لا تظن أنك وحدك، نحنُ نرى العالم معك وبك.",
+            "عزيمتُك هي التي تضيء الطريق، استمر في السعي.",
+            "العالم ينتظر لمستك الخاصة، فأنت تمتلك رؤية لا يملكها غيرك.",
+            "كل صباح هو فرصة جديدة لتثبت أن الإرادة لا تعرف المستحيل."
+        ];
+
+        function speak(t) {
+            window.speechSynthesis.cancel();
+            const m = new SpeechSynthesisUtterance(t);
+            m.lang = 'ar-EG'; m.rate = 1.4; m.pitch = 1.1;
+            window.speechSynthesis.speak(m);
+        }
+
+        function updateUI() {
+            const now = new Date();
+            let h = now.getHours();
+            let m = now.getMinutes().toString().padStart(2, '0');
+            let p = h >= 12 ? 'مساءً' : 'صباحاً';
+            h = h % 12 || 12;
+
+            document.getElementById('clock-display').innerText = `${h}:${m}`;
+            document.getElementById('period-display').innerText = p;
+
+            const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            document.getElementById('day-name').innerText = days[now.getDay()];
+            
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('full-date').innerText = now.toLocaleDateString('ar-EG', options);
+        }
+
+        function speakTime() {
+            if (navigator.vibrate) navigator.vibrate(60);
+            const now = new Date();
+            let h = now.getHours() % 12 || 12;
+            let m = now.getMinutes();
+            let p = now.getHours() >= 12 ? 'مساءً' : 'صباحاً';
+            speak(`الساعة الآن هي ${h} و ${m} دقيقة ${p}`);
+        }
+
+        function speakDate() {
+            if (navigator.vibrate) navigator.vibrate(60);
+            const day = document.getElementById('day-name').innerText;
+            const fullDate = document.getElementById('full-date').innerText;
+            speak(`اليوم هو ${day}، الموافق ${fullDate}`);
+        }
+
+        function speakRandomMessage() {
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            speak(msg);
+        }
+
+        function initHorizon() {
+            updateUI();
+            setInterval(updateUI, 1000);
+            speak("أهلاً بك في الأفق. الساعة تظهر الآن في منتصف الشاشة، اضغط عليها لسماع الوقت، أو اضغط بالأسفل لسماع التاريخ أو رسالتك اليومية.");
+        }
+    </script>
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        
+        // إنشاء استايل جديد عشان يغلب أي CSS قديم
+        const style = document.createElement('style');
+        let cssRules = "";
+
+        if (savedMode === 'high-vis') {
+            cssRules = `
+                body { background-color: #000 !important; color: #ff0 !important; }
+                div, section, button, a { background-color: #000 !important; color: #ff0 !important; border: 1px solid #ff0 !important; }
+                h1, h2, h3, p, span { color: #ff0 !important; }
+            `;
+        } 
+        else if (savedMode === 'dark') {
+            cssRules = `
+                body { background-color: #1a1a1a !important; color: #ffffff !important; }
+                div, section, button, a { background-color: #333 !important; color: #ffffff !important; }
+            `;
+        }
+        // السطر اللي كان ناقصنا: وضع القراءة اللبني
+        else if (savedMode === 'soft-blue') {
+            cssRules = `
+                body { background-color: #e3f2fd !important; color: #0d47a1 !important; }
+                div, section, button, a { background-color: #bbdefb !important; color: #0d47a1 !important; border: 1px solid #90caf9 !important; }
+                h1, h2, h3, p, span { color: #0d47a1 !important; }
+            `;
+        }
+
+        if (cssRules !== "") {
+            style.innerHTML = cssRules;
+            document.head.appendChild(style);
+        }
+    });
+</script>
+</body>
+</html>

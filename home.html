@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بَصيرة | المنظومة الشاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --mocha: #3D2B1F; 
+            --cream: #F5EFE6; 
+            --gold: #C69774; 
+            --red: #8e1a1a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        
+        body { 
+            background-color: var(--cream); 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .heart-icon {
+            font-size: 140px; 
+            color: var(--mocha);
+            animation: pulse 2.5s infinite;
+            filter: drop-shadow(0 10px 20px rgba(61, 43, 31, 0.1));
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .brand-name {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--mocha);
+            letter-spacing: 5px;
+            margin-top: 10px;
+        }
+
+        .inspiring-quote {
+            font-size: 1.1rem;
+            color: var(--gold);
+            font-weight: 700;
+            margin-top: 5px;
+            max-width: 80%;
+        }
+
+        .bottom-container {
+            background: var(--mocha);
+            padding: 30px 15px 20px 15px;
+            border-radius: 45px 45px 0 0;
+            box-shadow: 0 -12px 35px rgba(0,0,0,0.3);
+            width: 100%;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .icon-circle {
+            width: 80px; 
+            height: 80px;
+            background: var(--cream); 
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 6px;
+            border: 3px solid var(--gold);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-item span {
+            color: var(--cream);
+            font-weight: 900;
+            font-size: 0.85rem;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .sos-full-btn {
+            background: var(--red);
+            color: white;
+            padding: 18px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 1.4rem;
+            border: 2px solid var(--gold);
+            width: 100%;
+        }
+    
+/* --- ستايل بوابة أكاديمية بصيرة المميزة --- */
+        .portal-gateway {
+            text-decoration: none;
+            display: block;
+            background: linear-gradient(135deg, #2D1E17 0%, #8B4513 100%);
+            border-radius: 25px;
+            padding: 25px;
+            margin: 20px auto;
+            width: 90%;
+            border: 3px solid #D4A373;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transition: 0.4s all ease-in-out;
+        }
+
+        .portal-gateway:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(212, 163, 115, 0.3);
+            border-color: #FFFFFF;
+        }
+
+        .portal-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #F5EFE6;
+            text-align: right;
+        }
+
+        .portal-icon { 
+            font-size: 3.5rem; 
+        }
+
+        .portal-text h3 { 
+            color: #D4A373; 
+            margin-bottom: 5px; 
+            font-size: 1.7rem; 
+            font-weight: 900;
+        }
+
+        .portal-text p { 
+            font-size: 1.1rem; 
+            opacity: 0.8; 
+            margin: 0;
+        }
+
+.info-fixed-btn:hover {
+    transform: scale(1.15) rotate(15deg);
+    background: var(--warm-beige);
+}
+
+/* خلفية النافذة المنبثقة */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none; /* مخفية في البداية */
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(10px);
+}
+
+/* صندوق المعلومات */
+.modal-content {
+    background: var(--warm-beige);
+    color: var(--deep-brown);
+    padding: 40px;
+    border-radius: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: right;
+    position: relative;
+    border: 5px solid var(--gold-accent);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.modal-content h3 { 
+    color: #8B4513; 
+    margin-bottom: 15px; 
+    font-size: 1.8rem; 
+    font-weight: 900;
+}
+
+.modal-content p { 
+    line-height: 1.8; 
+    font-size: 1.2rem; 
+    margin-bottom: 25px; 
+    font-weight: 700;
+}
+
+.close-modal {
+    background: var(--deep-brown);
+    color: var(--warm-beige);
+    border: none;
+    padding: 12px 35px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 1.1rem;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.close-modal:hover { background: var(--gold-accent); color: var(--deep-brown); }
+    </style>
+</head>
+<link rel="manifest" href="manifest.json">
+<body onload="welcome()">
+
+    <main class="hero-section">
+        <div class="heart-icon" onclick="speak('بَصيرة.. أنتَ لستَ وحدك')">🤎</div>
+        <h1 class="brand-name">بَصيرة</h1>
+        <p class="inspiring-quote">"أنتَ مَرغوبٌ.. وبَصيرة رفيقُ دربِك."</p>
+    </main>
+
+    <div class="bottom-container">
+        <div class="nav-grid">
+            <a href="radar.html" class="nav-item" onmouseover="speak('الرادار')" ontouchstart="speak('الرادار')">
+                <div class="icon-circle">📡</div><span>الرادار</span>
+            </a>
+            <a href="weather.html" class="nav-item" onmouseover="speak('الأفق')" ontouchstart="speak('الأفق')">
+                <div class="icon-circle">🕒</div><span>الأفق</span>
+            </a>
+            <a href="heroes.html" class="nav-item" onmouseover="speak('ملهمون')" ontouchstart="speak('ملهمون')">
+                <div class="icon-circle">🌟</div><span>ملهمون</span>
+            </a>
+            <a href="contrast.html" class="nav-item" onmouseover="speak('التباين')" ontouchstart="speak('التباين')">
+                <div class="icon-circle">🌓</div><span>التباين</span>
+            </a>
+            <a href="library.html" class="nav-item" onmouseover="speak('المكتبة')" ontouchstart="speak('المكتبة')">
+                <div class="icon-circle">🎧</div><span>المكتبة</span>
+            <a href="calm.html" class="nav-item" onmouseover="speak('الهدوء')">
+    <div class="icon-circle">🧘</div>
+    <span>الهدوء</span>
+</a>
+            <a href="clothes.html" class="nav-item" onmouseover="speak('المنسق')">
+    <div class="icon-circle">👕</div>
+    <span>المنسق</span>
+</a>
+            <a href="alarm.html" class="nav-item" onmouseover="speak('المنبه')" ontouchstart="speak('المنبه')">
+                <div class="icon-circle">⏰</div><span>المنبه</span>
+<a href="quran.html" class="nav-item" onmouseenter="window.speechSynthesis.cancel(); speak('حفظ القرآن الكريم')">
+    <div class="icon-circle" style="background: white;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L4 6V11C4 11.5523 4.44772 12 5 12H19C19.5523 12 20 11.5523 20 11V6L12 3Z" fill="#C69774"/>
+            <path d="M12 21C14.7614 21 17 18.7614 17 16V12H7V16C7 18.7614 9.23858 21 12 21Z" fill="#3C2B22"/>
+        </svg>
+    </div>
+    <span>حفظ القرآن الكريم</span>
+</a>
+            <a href="support.html" class="nav-item" onmouseover="speak('الدعم')" ontouchstart="speak('الدعم')">
+                <div class="icon-circle">📞</div><span>الدعم</span>
+            </a>
+            <a href="team.html" class="nav-item" onmouseover="speak('الفريق')" ontouchstart="speak('الفريق')">
+                <div class="icon-circle">👥</div><span>الفريق</span>
+            </a>
+        </div>
+
+        <a href="sos.html" class="sos-full-btn" onmouseover="speak('نظام استغاثة بصيرة')" ontouchstart="speak('نظام استغاثة بصيرة')">
+            <span>🆘</span> نظام استغاثة بَصيرة
+        </a>
+        <a href="academy.html" class="portal-gateway" 
+   onmouseover="speak('بوابة أكاديمية بَصيرة التعليمية، دروس وإرشادات')" 
+   onfocus="speak('بوابة أكاديمية بَصيرة التعليمية، دروس وإرشادات')">
+    <div class="portal-content">
+        <span class="portal-icon">🎓</span>
+        <div class="portal-text">
+            <h3>أكاديمية بَصيرة</h3>
+            <p>دروس تعليمية وإرشادات مجتمعية</p>
+        </div>
+    </div>
+</a>
+    </div>
+
+    <script>
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            const maleVoice = voices.find(v => v.lang.includes('ar') && (v.name.includes('Google') || v.name.includes('Male')));
+            
+            if (maleVoice) msg.voice = maleVoice;
+            msg.lang = 'ar-EG';
+            msg.rate = 1.1; 
+            msg.pitch = 0.85; 
+            window.speechSynthesis.speak(msg);
+        }
+
+        function welcome() {
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+            
+            const detailedIntro = `
+                أهلاً بك يا بطل.. في عالمك الخاص. تذكر دائماً، أن بصيرتك الحقيقية تسكن في قلبك، وعزيمتك هي التي تنير لك الطريق. أنت لست وحدك، بَصيرة رفيق دربك الوفي.
+
+                دعني أصف لك الشاشة بالتفصيل:
+                في الجزء العلوي، يوجد شعار بَصيرة الكبير، وهو قلب يمكنك لمسه لسماع كلمات تشجيعية.
+
+                بالأسفل، توجد لوحة التحكم البنيّة وتضم إحدى عشرة أيقونة كبيرة، موزعة في شبكة لسهولة اللمس.
+                
+                تبدأ الأيقونات من أعلى اليمين بالرادار، ثم الأفق، ملهمون، والتباين.
+                وفي الوسط ستجد المكتبة، الهدوء، المنسق، والمنبه.
+                أما في نهاية القائمة، وقبل زر الاستغاثة مباشرة، ستجد أيقونات حفظ القرآن، ثم أيقونة الدعم، وأخيراً أيقونة الفريق.
+                
+                وفي ختام الشاشة بالأسفل تماماً، يوجد الزر الأحمر العريض المخصص لنظام الاستغاثة.
+
+                الآن.. مرر إصبعك لتستكشف الخدمات، وسأقوم بنطق اسم كل خدمة تقف عليها. ابدأ الآن.
+            `;
+            
+            setTimeout(() => speak(detailedIntro), 700);
+        }
+        window.speechSynthesis.onvoiceschanged = () => {};
+    </script>
+    <button class="info-fixed-btn" onclick="openInfoModal()" onmouseenter="speak('معلومات عن التطبيق والتعليمات')">💡</button>
+
+<div class="modal-overlay" id="infoModal">
+    <div class="modal-content">
+        <h3>عن تطبيق بَصيرة 👁️</h3>
+        <p>
+            تطبيق <b>بَصيرة</b> هو مشروعك التخرجي المصمم لخدمة المكفوفين. يهدف التطبيق لتسهيل الوصول للقرآن الكريم والخدمات اليومية باستخدام الصوت والاهتزاز.
+        </p>
+        
+        <hr style="border: 1px solid var(--gold-accent); margin-bottom: 20px; opacity: 0.3;">
+        
+        <h3>إرشادات الاستخدام ✨</h3>
+        <p>
+            • استخدم الأوامر الصوتية بالضغط على المايك.<br>
+            • اضغط على زر المسافة (Space) للتحكم السريع.<br>
+            • المس الأيقونات لسماع أسمائها.
+        </p>
+        
+        <button class="close-modal" onclick="closeInfoModal()">فهمت، إغلاق النافذة</button>
+    </div>
+</div>
+<script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>

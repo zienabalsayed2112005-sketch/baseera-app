@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تكنولوجيا مساعدة | أكاديمية بَصيرة</title>
+    <style>
+        :root {
+            --deep-brown: #2D1E17;
+            --gold: #D4A373;
+            --beige: #F5EFE6;
+            --white: #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--beige); color: var(--deep-brown); min-height: 100vh; line-height: 1.8; }
+
+        header {
+            background: linear-gradient(to bottom, var(--deep-brown), #4A3428);
+            padding: 35px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+        }
+        header h1 { color: var(--gold); font-size: 2.6rem; font-weight: 900; }
+
+        .container { max-width: 1300px; margin: 40px auto; padding: 0 20px; }
+
+        .tech-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 60px;
+        }
+
+        .tech-card {
+            background: var(--white);
+            border-radius: 35px;
+            padding: 40px 15px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 3px solid transparent;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .tech-card:hover { border-color: var(--gold); background: var(--deep-brown); transform: translateY(-10px); }
+        .tech-card:hover h3, .tech-card:hover p { color: var(--gold); }
+
+        .icon-box { font-size: 4.5rem; margin-bottom: 20px; display: block; }
+        .tech-card h3 { color: var(--deep-brown); font-size: 1.4rem; margin-bottom: 15px; font-weight: 800; }
+        .tech-card p { font-size: 0.95rem; color: #666; transition: 0.4s; }
+
+        .detailed-article {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            border-right: 12px solid var(--gold);
+            margin-bottom: 50px;
+        }
+
+        .detailed-article h2 { color: var(--deep-brown); font-size: 2.3rem; margin-bottom: 40px; text-align: center; border-bottom: 3px solid var(--beige); padding-bottom: 20px; }
+        
+        .article-section { margin-bottom: 45px; }
+        .article-section h3 { color: var(--gold); font-size: 1.7rem; margin-bottom: 15px; display: flex; align-items: center; }
+        .article-section h3::before { content: "🤖"; margin-left: 15px; }
+        
+        .article-section p { font-size: 1.25rem; color: #444; text-align: justify; line-height: 2; margin-bottom: 15px; }
+
+        .article-section ul { margin-right: 40px; margin-top: 15px; list-style: none; }
+        .article-section ul li { font-size: 1.15rem; color: #555; margin-bottom: 15px; position: relative; }
+        .article-section ul li::before { content: "⚡"; color: var(--gold); margin-left: 12px; font-weight: bold; }
+
+        .nav-footer { text-align: center; padding-bottom: 60px; }
+        .btn-back {
+            padding: 18px 70px;
+            background: var(--deep-brown);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 60px;
+            border: 3px solid var(--gold);
+            font-weight: 900;
+            font-size: 1.3rem;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .btn-back:hover { background: var(--gold); color: var(--deep-brown); }
+    </style>
+</head>
+<body onload="startTechLesson()">
+
+    <header>
+        <h1>التكنولوجيا المساعدة الحديثة</h1>
+    </header>
+
+    <div class="container">
+        <div class="tech-grid">
+            <div class="tech-card" onmouseenter="speak('تطبيقات التعرف البصري لقراءة النصوص والعملات')">
+                <span class="icon-box">🔍</span>
+                <h3>التعرف البصري</h3>
+                <p>تحويل الصور المكتوبة إلى صوت مسموع فوراً.</p>
+            </div>
+            <div class="tech-card" onmouseenter="speak('المساعدات الصوتية الذكية للتحكم في الهاتف')">
+                <span class="icon-box">🎙️</span>
+                <h3>المساعد الذكي</h3>
+                <p>إدارة يومك بالكامل عبر الأوامر الصوتية.</p>
+            </div>
+            <div class="tech-card" onmouseenter="speak('أجهزة السطر الإلكتروني للقراءة بطريقة برايل')">
+                <span class="icon-box">📟</span>
+                <h3>أجهزة برايل</h3>
+                <p>تحويل نصوص الشاشة إلى نقاط برايل ملموسة.</p>
+            </div>
+            <div class="tech-card" onmouseenter="speak('تطبيقات الوصف المباشر للمحيط والوجوه')">
+                <span class="icon-box">👁️</span>
+                <h3>وصف العالم</h3>
+                <p>تعرف على الأشخاص والأشياء بالذكاء الاصطناعي.</p>
+            </div>
+        </div>
+
+        <article class="detailed-article">
+            <h2>ثورة الحلول الرقمية في حياة المكفوفين</h2>
+            
+            <div class="article-section">
+                <h3>أولاً: تقنيات القراءة الذكية وOCR المتطور</h3>
+                <p>لم تعد القراءة عائقاً في عام 2026؛ فالتطبيقات الحديثة تعتمد على محركات ذكاء اصطناعي تفهم السياق. لا تقوم هذه التطبيقات بمجرد نطق الحروف، بل يمكنها تصنيف المستندات، والتعرف على خط اليد، وترجمة النصوص فورياً. </p>
+                <ul>
+                    <li>قراءة قوائم الطعام (Menus) في المطاعم بكل استقلالية.</li>
+                    <li>التعرف على تاريخ انتهاء الصلاحية على العلب الدوائية والغذائية.</li>
+                    <li>مسح المستندات الرسمية وتحويلها إلى ملفات نصية قابلة للتعديل.</li>
+                </ul>
+            </div>
+
+            <div class="article-section">
+                <h3>ثانياً: المساعدات الصوتية والتحكم اللامسي</h3>
+                <p>أصبح الهاتف الذكي "سكرتيراً خاصاً" للكفيف. من خلال دمج المساعدات الصوتية مثل (Siri) و (Google Assistant) مع تقنيات قارئ الشاشة، يمكن للمستخدم القيام بمهام معقدة في ثوانٍ. هذا يشمل ضبط المواعيد، البحث في الإنترنت، وحتى التحكم في أجهزة المنزل الذكي مثل الإضاءة والتكييف، مما يوفر بيئة معيشية مريحة وآمنة.</p>
+            </div>
+
+            <div class="article-section">
+                <h3>ثالثاً: السطر الإلكتروني وبرايل الرقمي</h3>
+                <p>يمثل السطر الإلكتروني (Braille Display) قمة التطور في دمج الطريقة التقليدية بالتكنولوجيا الحديثة. هو عبارة عن جهاز يحتوي على خلايا برايل ميكانيكية ترتفع وتنخفض لتشكل الحروف التي تظهر على شاشة الكمبيوتر. يمنح هذا الجهاز للكفيف القدرة على مراجعة النصوص بدقة إملائية عالية، وتعلم اللغات، والقيام بعمليات البرمجة وكتابة الأكواد التي يصعب تتبعها صوتياً فقط.</p>
+            </div>
+
+            <div class="article-section">
+                <h3>رابعاً: تطبيقات الرؤية المجتمعية والاصطناعية</h3>
+                <p>هناك نوعان من الدعم البصري الآن؛ "الذكاء الاصطناعي" الذي يصف المشهد (مثل: أمامك رجل يبتسم ويرتدي قميصاً أزرق)، و"الذكاء البشري" عبر تطبيقات المشاركة الاجتماعية. </p>
+                <ul>
+                    <li>تطبيقات الوصف المكاني التي تنبهك لوجود عوائق في طريقك عبر اهتزازات الهاتف.</li>
+                    <li>منصات المتطوعين التي توفر دعماً مباشراً في المواقف الحرجة التي تتطلب رأياً بشرياً دقيقاً.</li>
+                    <li>تقنيات التعرف على الوجوه التي تخبر الكفيف بهوية الأشخاص الموجودين معه في الغرفة.</li>
+                </ul>
+            </div>
+        </article>
+    </div>
+
+    <div class="nav-footer">
+        <a href="lessons.html" class="btn-back" onmouseenter="speak('العودة لقسم الدروس')">العودة لقسم الدروس</a>
+    </div>
+
+    <script>
+        function speak(text, callback) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-EG';
+            utterance.rate = 0.9;
+            if (callback) utterance.onend = callback;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function startTechLesson() {
+            speak("مرحباً بك في درس التكنولوجيا المساعدة. استكشف كيف تحول التكنولوجيا المستحيل إلى ممكن.", function() {
+                const script = `
+                    اليوم التكنولوجيا هي عيونك التي ترى بها العالم الرقمي.
+                    في هذا الدرس المطور، سنتعرف على أربع ركائز أساسية:
+                    أولاً: القراءة الذكية التي تحول أي نص مطبوع إلى صوت أو ملف رقمي.
+                    ثانياً: المساعدات الصوتية التي تجعل هاتفك ومنزلك يطيعان أوامرك الكلامية.
+                    ثالثاً: السطر الإلكتروني الذي يعيد إحياء لغة برايل في العصر الرقمي.
+                    رابعاً: تطبيقات الوصف المباشر التي تمنحك تفاصيل دقيقة عن الأشخاص والأماكن من حولك.
+                    تفضل الآن بالمرور على الأيقونات لسماع ملخص كل تقنية، واقرأ الشرح المفصل بالأسفل.
+                `;
+                setTimeout(() => { speak(script); }, 800);
+            });
+        }
+		
+    </script>
+	<script>
+    // التأكد من تطبيق التباين فور تحميل صفحة هوم
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('baseeraTheme');
+        if (savedMode) {
+            const body = document.body;
+            if (savedMode === 'dark') {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#fff';
+            } else if (savedMode === 'high-vis') {
+                body.style.backgroundColor = '#000';
+                body.style.color = '#ff0';
+            } else if (savedMode === 'soft-blue') {
+                body.style.backgroundColor = '#e3f2fd';
+                body.style.color = '#0d47a1';
+            }
+        }
+    });
+</script>
+</body>
+</html>
